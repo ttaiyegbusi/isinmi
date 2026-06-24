@@ -1,53 +1,84 @@
-import { useReveal } from "../hooks/useReveal";
+import { useRef } from "react";
+import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
+
+const paragraph1 =
+  "A Yoruba word meaning REST. Ìsinmi aims to provide rest for survivors of sexual abuse in Nigeria by building a community that promotes peace and sanity for survivors by leveraging education as a powerful tool to enlighten and eradicate sexual abuse within the country and Africa at large.";
+
+const paragraph2 =
+  "Our long-term mission is to help eradicate sexual abuse in Nigeria and across Africa through education, advocacy, and community support. We believe every survivor deserves a safe space to heal, to be heard, and to rebuild.";
+
+const words1 = paragraph1.split(" ");
+const words2 = paragraph2.split(" ");
+const totalWords = words1.length + words2.length;
+
+function Word({
+  children,
+  progress,
+  range,
+}: {
+  children: string;
+  progress: MotionValue<number>;
+  range: [number, number];
+}) {
+  const color = useTransform(progress, range, ["#9ca3af", "#111827"]);
+  return (
+    <motion.span style={{ color }} className="inline-block">
+      {children}&nbsp;
+    </motion.span>
+  );
+}
+
+function Paragraph({
+  words,
+  startIndex,
+  progress,
+  className,
+}: {
+  words: string[];
+  startIndex: number;
+  progress: MotionValue<number>;
+  className?: string;
+}) {
+  return (
+    <p className={className}>
+      {words.map((word, i) => {
+        const idx = startIndex + i;
+        return (
+          <Word key={i} progress={progress} range={[idx / totalWords, (idx + 1) / totalWords]}>
+            {word}
+          </Word>
+        );
+      })}
+    </p>
+  );
+}
 
 export default function AboutUs() {
-  const ref1 = useReveal();
-  const ref2 = useReveal();
-  const ref3 = useReveal();
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: wrapperRef,
+    offset: ["start start", "end end"],
+  });
 
   return (
-    <section id="about" className="bg-white py-24 sm:py-32 px-6 sm:px-12 lg:px-20">
-      <div className="max-w-6xl mx-auto">
-        {/* Two-column header */}
-        <div className="grid grid-cols-1 lg:grid-cols-[220px_1fr] gap-12 lg:gap-20 mb-20">
-          <div ref={ref1}>
-            <span className="text-xs tracking-[0.3em] text-[#1a4a47] font-medium uppercase">
-              / About Us
-            </span>
-          </div>
-          <div ref={ref2} className="space-y-6">
-            <p className="text-gray-900 text-lg sm:text-xl leading-relaxed font-light max-w-2xl">
-              <em>Isinmi</em> is a Yoruba word meaning <strong className="font-semibold text-[#1a4a47]">REST</strong>.
-              We exist to provide rest, peace, and support for survivors of sexual abuse in
-              Nigeria, by building a community that promotes healing, sanity, safety, education,
-              and awareness.
-            </p>
-            <p className="text-gray-500 text-base leading-relaxed max-w-2xl">
-              Our long-term mission is to help eradicate sexual abuse in Nigeria and across Africa
-              through education, advocacy, and community support. We believe every survivor deserves
-              a safe space to heal, to be heard, and to rebuild.
-            </p>
-          </div>
-        </div>
-
-        {/* Image grid */}
-        <div ref={ref3} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="overflow-hidden rounded-2xl aspect-[4/3]">
-            <img
-              src="https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=900&q=80&fit=crop"
-              alt="Peaceful ocean coastline"
-              className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
-              loading="lazy"
-            />
-          </div>
-          <div className="overflow-hidden rounded-2xl aspect-[4/3] sm:mt-10">
-            <img
-              src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=900&q=80&fit=crop"
-              alt="Calm shoreline"
-              className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
-              loading="lazy"
-            />
-          </div>
+    <section id="about" ref={wrapperRef} className="relative bg-white" style={{ height: "180vh" }}>
+      <div className="sticky top-0 px-6 sm:px-12 lg:px-20 pt-28 sm:pt-32">
+        <div className="max-w-4xl mx-auto w-full">
+          <span className="block mb-8 text-xs tracking-[0.3em] text-[#1a4a47] font-semibold uppercase">
+            / About Us
+          </span>
+          <Paragraph
+            words={words1}
+            startIndex={0}
+            progress={scrollYProgress}
+            className="text-xl sm:text-2xl lg:text-3xl leading-relaxed font-light mb-8"
+          />
+          <Paragraph
+            words={words2}
+            startIndex={words1.length}
+            progress={scrollYProgress}
+            className="text-xl sm:text-2xl lg:text-3xl leading-relaxed font-light"
+          />
         </div>
       </div>
     </section>

@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 
 export default function Hero() {
   const titleRef = useRef<HTMLHeadingElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     const el = titleRef.current;
@@ -16,6 +17,21 @@ export default function Hero() {
     return () => clearTimeout(t);
   }, []);
 
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    const tryPlay = () => {
+      video.play().catch(() => {});
+    };
+    tryPlay();
+    video.addEventListener("loadedmetadata", tryPlay);
+    video.addEventListener("canplay", tryPlay);
+    return () => {
+      video.removeEventListener("loadedmetadata", tryPlay);
+      video.removeEventListener("canplay", tryPlay);
+    };
+  }, []);
+
   return (
     <section
       id="home"
@@ -23,6 +39,7 @@ export default function Hero() {
     >
       {/* Background video - aerial ocean */}
       <video
+        ref={videoRef}
         className="absolute inset-0 w-full h-full object-cover"
         src="/videos/hero-ocean.mp4"
         poster="https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=1800&q=85&fit=crop"
