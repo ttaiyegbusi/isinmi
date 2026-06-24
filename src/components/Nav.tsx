@@ -1,10 +1,28 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useLayoutEffect } from "react";
+import { motion } from "framer-motion";
+import { Home } from "lucide-react";
 
 const links = ["Home", "About Us", "The Data", "Our Reach", "Values", "Testimonials"];
 const hrefs = ["#home", "#about", "#data", "#reach", "#values", "#testimonials"];
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+  const navRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [contentWidth, setContentWidth] = useState(0);
+
+  useLayoutEffect(() => {
+    const measure = () => {
+      if (contentRef.current) {
+        setContentWidth(Math.ceil(contentRef.current.scrollWidth) + 12);
+      }
+    };
+    measure();
+    document.fonts?.ready?.then(measure);
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -12,26 +30,69 @@ export default function Nav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    if (!open) return;
+    const onOutsideClick = (e: MouseEvent) => {
+      if (navRef.current && !navRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("click", onOutsideClick);
+    return () => document.removeEventListener("click", onOutsideClick);
+  }, [open]);
+
   return (
-    <nav className="fixed top-5 left-1/2 -translate-x-1/2 z-50 transition-all duration-500">
+    <nav
+      ref={navRef}
+      className="fixed top-5 left-1/2 -translate-x-1/2 z-50"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
       <div
-        className={`flex items-center gap-1 px-3 py-2 rounded-full text-sm font-medium transition-all duration-500 ${
+        className={`flex items-center rounded-full text-sm font-medium overflow-hidden p-[6px] transition-colors duration-300 ${
           scrolled
             ? "bg-white/95 backdrop-blur-md shadow-lg shadow-black/10 text-[#1a4a47]"
-            : "bg-white/20 backdrop-blur-sm border border-white/30 text-white"
+            : "bg-white/15 backdrop-blur-md border border-white/25 text-white"
         }`}
       >
-        {links.map((link, i) => (
-          <a
-            key={link}
-            href={hrefs[i]}
-            className={`px-3 py-1.5 rounded-full transition-all duration-200 hover:bg-white/20 whitespace-nowrap text-xs sm:text-sm ${
-              scrolled ? "hover:bg-[#1a4a47]/10 hover:text-[#1a4a47]" : "hover:bg-white/20"
-            }`}
-          >
-            {link}
-          </a>
-        ))}
+        <button
+          type="button"
+          aria-label="Toggle navigation"
+          aria-expanded={open}
+          onClick={() => setOpen((prev) => !prev)}
+          className="flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center"
+        >
+          <Home size={16} strokeWidth={1.75} />
+        </button>
+
+        <motion.div
+          initial={false}
+          animate={{
+            width: open ? contentWidth : 0,
+            opacity: open ? 1 : 0,
+          }}
+          transition={{
+            width: { duration: open ? 0.5 : 0.35, ease: [0.32, 0.72, 0, 1] },
+            opacity: { duration: open ? 0.35 : 0.2, ease: "easeInOut" },
+          }}
+          style={{ overflow: "hidden" }}
+          className="flex items-center"
+        >
+          <div ref={contentRef} className="flex items-center">
+            {links.map((link, i) => (
+              <a
+                key={link}
+                href={hrefs[i]}
+                onClick={() => setOpen(false)}
+                className={`px-3 py-2 rounded-full whitespace-nowrap text-xs sm:text-sm transition-colors duration-200 ${
+                  scrolled ? "hover:bg-[#1a4a47]/10 hover:text-[#1a4a47]" : "hover:bg-white/15"
+                }`}
+              >
+                {link}
+              </a>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </nav>
   );
