@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useReveal } from "../hooks/useReveal";
 
 const locations = [
   "Nigeria",
@@ -12,32 +12,6 @@ const locations = [
   "Ghana",
   "Burundi",
 ];
-
-function useReveal(delay = 0) {
-  const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => {
-            el.style.opacity = "1";
-            el.style.transform = "translateY(0)";
-          }, delay);
-          obs.disconnect();
-        }
-      },
-      { threshold: 0.1 }
-    );
-    el.style.opacity = "0";
-    el.style.transform = "translateY(30px)";
-    el.style.transition = "opacity 0.9s cubic-bezier(0.22,1,0.36,1), transform 0.9s cubic-bezier(0.22,1,0.36,1)";
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [delay]);
-  return ref;
-}
 
 export default function OurReach() {
   const leftRef = useReveal(0);

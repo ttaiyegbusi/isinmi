@@ -1,28 +1,4 @@
-import { useRef, useEffect } from "react";
-
-function useReveal() {
-  const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          el.style.opacity = "1";
-          el.style.transform = "translateY(0)";
-          obs.disconnect();
-        }
-      },
-      { threshold: 0.15 }
-    );
-    el.style.opacity = "0";
-    el.style.transform = "translateY(40px)";
-    el.style.transition = "opacity 0.9s cubic-bezier(0.22,1,0.36,1), transform 0.9s cubic-bezier(0.22,1,0.36,1)";
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-  return ref;
-}
+import { useReveal } from "../hooks/useReveal";
 
 export default function AboutUs() {
   const ref1 = useReveal();

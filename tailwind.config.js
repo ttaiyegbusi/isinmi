@@ -7,8 +7,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["'DM Sans'", "system-ui", "sans-serif"],
-        display: ["'Playfair Display'", "Georgia", "serif"],
+        sans: ["'Manrope'", "system-ui", "sans-serif"],
+        display: ["'Radio Grotesk'", "Georgia", "serif"],
       },
       colors: {
         teal: {

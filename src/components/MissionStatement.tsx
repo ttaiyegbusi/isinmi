@@ -1,33 +1,14 @@
-import { useRef, useEffect } from "react";
+import { useReveal } from "../hooks/useReveal";
 
 export default function MissionStatement() {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          el.style.opacity = "1";
-          el.style.transform = "translateY(0)";
-          obs.disconnect();
-        }
-      },
-      { threshold: 0.2 }
-    );
-    el.style.opacity = "0";
-    el.style.transform = "translateY(50px)";
-    el.style.transition = "opacity 1.1s cubic-bezier(0.22,1,0.36,1), transform 1.1s cubic-bezier(0.22,1,0.36,1)";
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
+  const introRef = useReveal();
+  const ref = useReveal();
 
   return (
     <section className="bg-white py-24 sm:py-36 px-6 sm:px-12 lg:px-20">
       <div className="max-w-5xl mx-auto">
         {/* Editorial intro paragraph */}
-        <div className="grid grid-cols-1 lg:grid-cols-[220px_1fr] gap-10 lg:gap-20 mb-20">
+        <div ref={introRef} className="grid grid-cols-1 lg:grid-cols-[220px_1fr] gap-10 lg:gap-20 mb-20">
           <div />
           <p className="text-gray-500 text-base sm:text-lg leading-relaxed font-light max-w-xl">
             Consider a world where rape doesn't exist. Envision being a woman not having to carry
