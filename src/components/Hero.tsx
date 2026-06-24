@@ -1,8 +1,10 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Hero() {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [videoBox, setVideoBox] = useState<{ width: number; height: number } | null>(null);
 
   useEffect(() => {
     const el = titleRef.current;
@@ -19,16 +21,43 @@ export default function Hero() {
 
   useEffect(() => {
     const video = videoRef.current;
-    if (!video) return;
+    const container = containerRef.current;
+    if (!video || !container) return;
+
+    const recalc = () => {
+      const vw = video.videoWidth;
+      const vh = video.videoHeight;
+      if (!vw || !vh) return;
+      const cw = container.clientWidth;
+      const ch = container.clientHeight;
+      const scale = Math.max(cw / vw, ch / vh);
+      setVideoBox({ width: Math.ceil(vw * scale), height: Math.ceil(vh * scale) });
+    };
+
     const tryPlay = () => {
       video.play().catch(() => {});
+      recalc();
     };
+
     tryPlay();
-    video.addEventListener("loadedmetadata", tryPlay);
+    video.addEventListener("loadedmetadata", recalc);
     video.addEventListener("canplay", tryPlay);
+    window.addEventListener("resize", recalc);
+
+    // Cover the case where metadata is already available (e.g. cached)
+    // before these listeners were attached.
+    const poll = window.setInterval(() => {
+      if (video.videoWidth) {
+        recalc();
+        window.clearInterval(poll);
+      }
+    }, 50);
+
     return () => {
-      video.removeEventListener("loadedmetadata", tryPlay);
+      video.removeEventListener("loadedmetadata", recalc);
       video.removeEventListener("canplay", tryPlay);
+      window.removeEventListener("resize", recalc);
+      window.clearInterval(poll);
     };
   }, []);
 
@@ -38,17 +67,28 @@ export default function Hero() {
       className="relative h-screen min-h-[600px] flex flex-col items-center justify-center overflow-hidden"
     >
       {/* Background video - aerial ocean */}
-      <video
-        ref={videoRef}
-        className="absolute inset-0 w-full h-full object-cover"
-        src="/videos/hero-ocean.mp4"
-        poster="https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=1800&q=85&fit=crop"
-        autoPlay
-        loop
-        muted
-        playsInline
-        preload="auto"
-      />
+      <div ref={containerRef} className="absolute inset-0 overflow-hidden">
+        <video
+          ref={videoRef}
+          className="absolute top-1/2 left-1/2"
+          style={
+            videoBox
+              ? {
+                  width: `${videoBox.width}px`,
+                  height: `${videoBox.height}px`,
+                  transform: "translate(-50%, -50%)",
+                }
+              : { width: "100%", height: "100%", objectFit: "cover", transform: "translate(-50%, -50%)" }
+          }
+          src="/videos/hero-ocean.mp4"
+          poster="https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=1800&q=85&fit=crop"
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+        />
+      </div>
       {/* Dark teal overlay */}
       <div className="absolute inset-0 bg-[#122e2c]/55" />
       {/* Gradient vignette */}

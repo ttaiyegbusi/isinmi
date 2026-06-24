@@ -61,8 +61,8 @@ export default function AboutUs() {
   });
 
   return (
-    <section id="about" ref={wrapperRef} className="relative bg-white" style={{ height: "180vh" }}>
-      <div className="sticky top-0 px-6 sm:px-12 lg:px-20 pt-28 sm:pt-32">
+    <section id="about" ref={wrapperRef} className="relative bg-white" style={{ height: "140vh" }}>
+      <div className="sticky top-0 h-screen flex flex-col justify-center px-6 sm:px-12 lg:px-20 pb-24">
         <div className="max-w-4xl mx-auto w-full">
           <span className="block mb-8 text-xs tracking-[0.3em] text-[#1a4a47] font-semibold uppercase">
             / About Us

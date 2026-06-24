@@ -79,7 +79,7 @@ export default function TheData() {
   }, []);
 
   return (
-    <section id="data" className="bg-[#1a4a47] py-24 sm:py-32 px-6 sm:px-12 lg:px-20">
+    <section id="data" className="bg-[#1a4a47] pt-32 sm:pt-40 lg:pt-48 pb-24 sm:pb-32 px-6 sm:px-12 lg:px-20">
       <div className="max-w-6xl mx-auto">
         {/* Label + copy */}
         <div ref={introRef} className="mb-20">
