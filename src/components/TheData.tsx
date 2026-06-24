@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState } from "react";
+import { useReveal } from "../hooks/useReveal";
 
 const stats = [
   {
@@ -32,7 +33,7 @@ function StatPillar({ stat, visible }: { stat: typeof stats[0]; visible: boolean
     <div className="flex flex-col items-center gap-4">
       {/* Floating card */}
       <div
-        className="bg-white rounded-xl p-4 w-44 text-center shadow-lg shadow-black/20 transition-all duration-700"
+        className="bg-white rounded-xl p-4 w-44 text-center shadow-lg shadow-black/20 transition-all duration-[1400ms]"
         style={{
           opacity: visible ? 1 : 0,
           transform: visible ? "translateY(0)" : "translateY(20px)",
@@ -47,7 +48,7 @@ function StatPillar({ stat, visible }: { stat: typeof stats[0]; visible: boolean
 
       {/* Pillar */}
       <div
-        className={`w-12 sm:w-14 rounded-t-xl bg-gradient-to-t from-[#0d2422] to-[#3d9e96] transition-all duration-1000 ease-out ${stat.height}`}
+        className={`w-12 sm:w-14 rounded-t-xl bg-gradient-to-t from-[#0d2422] to-[#3d9e96] transition-all duration-[1600ms] ease-out ${stat.height}`}
         style={{
           opacity: visible ? 1 : 0,
           transform: visible ? "scaleY(1)" : "scaleY(0)",
@@ -62,6 +63,7 @@ function StatPillar({ stat, visible }: { stat: typeof stats[0]; visible: boolean
 export default function TheData() {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
+  const introRef = useReveal();
 
   useEffect(() => {
     const el = ref.current;
@@ -80,7 +82,7 @@ export default function TheData() {
     <section id="data" className="bg-[#1a4a47] py-24 sm:py-32 px-6 sm:px-12 lg:px-20">
       <div className="max-w-6xl mx-auto">
         {/* Label + copy */}
-        <div className="mb-20">
+        <div ref={introRef} className="mb-20">
           <span className="text-[#3d9e96] text-xs tracking-[0.3em] font-medium uppercase">
             / The Data
           </span>

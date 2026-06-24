@@ -69,7 +69,7 @@ export default function Footer() {
         <div className="max-w-6xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-10">
           {/* Brand */}
           <div className="col-span-2 sm:col-span-1">
-            <div className="font-display font-black text-2xl mb-3 tracking-tight">ISINMI</div>
+            <div className="font-display font-black text-2xl mb-3 tracking-tight">ÌSINMI</div>
             <p className="text-white/40 text-xs leading-relaxed max-w-[180px]">
               A sanctuary for survivors of sexual abuse across Nigeria and Africa.
             </p>
@@ -141,11 +141,11 @@ export default function Footer() {
           style={{
             fontSize: "clamp(5rem, 22vw, 22rem)",
             color: "rgba(255,255,255,0.04)",
-            letterSpacing: "-0.03em",
+            letterSpacing: "-0.02em",
             lineHeight: 0.85,
           }}
         >
-          ISINMI
+          ÌSINMI
         </div>
       </div>
     </footer>

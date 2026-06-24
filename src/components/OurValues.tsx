@@ -49,8 +49,8 @@ export default function OurValues() {
     items.forEach((item) => {
       const el = item as HTMLElement;
       el.style.opacity = "0";
-      el.style.transform = "translateY(30px)";
-      el.style.transition = "opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.8s cubic-bezier(0.22,1,0.36,1)";
+      el.style.transform = "translateY(28px)";
+      el.style.transition = "opacity 1.6s cubic-bezier(0.22,1,0.36,1), transform 1.6s cubic-bezier(0.22,1,0.36,1)";
       obs.observe(el);
     });
     return () => obs.disconnect();

@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useReveal } from "../hooks/useReveal";
 
 const testimonials = [
   {
@@ -39,6 +40,8 @@ const testimonials = [
 export default function Testimonials() {
   const [active, setActive] = useState(0);
   const cardRef = useRef<HTMLDivElement>(null);
+  const headerRef = useReveal();
+  const cardsRowRef = useReveal(100);
 
   const go = (dir: 1 | -1) => {
     if (cardRef.current) {
@@ -74,7 +77,7 @@ export default function Testimonials() {
     <section id="testimonials" className="bg-white py-24 sm:py-32 px-6 sm:px-12 lg:px-20">
       <div className="max-w-6xl mx-auto">
         {/* Header row */}
-        <div className="flex items-end justify-between mb-16 flex-wrap gap-6">
+        <div ref={headerRef} className="flex items-end justify-between mb-16 flex-wrap gap-6">
           <div>
             <span className="text-[#1a4a47] text-xs tracking-[0.3em] font-medium uppercase">
               / Testimonials
@@ -103,7 +106,7 @@ export default function Testimonials() {
         </div>
 
         {/* Cards row */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div ref={cardsRowRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {testimonials.map((testimonial, i) => (
             <div
               key={testimonial.name}
