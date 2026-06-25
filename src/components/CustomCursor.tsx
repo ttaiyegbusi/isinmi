@@ -40,6 +40,12 @@ export default function CustomCursor() {
     let ringX = x;
     let ringY = y;
     let overHero = false;
+    let introDone = false;
+
+    const onIntroDone = () => {
+      introDone = true;
+    };
+    window.addEventListener("intro:done", onIntroDone);
 
     const updateCta = () => {
       cta.textContent = isOceanOn() ? "Click to mute" : "Click to activate sound";
@@ -64,7 +70,7 @@ export default function CustomCursor() {
     };
 
     const onClick = () => {
-      if (!overHero) return;
+      if (!overHero || !introDone) return;
       const on = toggleOcean();
       playToggleCue(on);
       updateCta();
@@ -90,8 +96,8 @@ export default function CustomCursor() {
       ring.classList.toggle("on-light", light);
       dot.classList.toggle("on-light", light);
 
-      // hero CTA
-      const nowOverHero = !!el?.closest("#home");
+      // hero CTA - only after the intro has finished
+      const nowOverHero = introDone && !!el?.closest("#home");
       if (nowOverHero !== overHero) {
         overHero = nowOverHero;
         ring.classList.toggle("is-hero", overHero);
@@ -112,6 +118,7 @@ export default function CustomCursor() {
       window.removeEventListener("pointerdown", onDown);
       window.removeEventListener("pointerup", onUp);
       window.removeEventListener("click", onClick);
+      window.removeEventListener("intro:done", onIntroDone);
       document.removeEventListener("mouseleave", onLeave);
       document.removeEventListener("mouseenter", onEnter);
       cancelAnimationFrame(raf);

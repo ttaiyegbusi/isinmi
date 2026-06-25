@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { motion } from "framer-motion";
-import { Home } from "lucide-react";
+import { Menu } from "lucide-react";
 
 const links = ["Home", "About Us", "The Data", "Our Reach", "Values", "Testimonials"];
 const hrefs = ["#home", "#about", "#data", "#reach", "#values", "#testimonials"];
@@ -44,27 +44,18 @@ export default function Nav() {
   return (
     <nav
       ref={navRef}
-      className="fixed top-5 left-1/2 -translate-x-1/2 z-50"
+      className="fixed top-5 right-5 z-50"
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
     >
       <div
         className={`flex items-center rounded-full text-sm font-medium overflow-hidden p-[6px] transition-colors duration-300 ${
           scrolled
-            ? "bg-white/95 backdrop-blur-md shadow-lg shadow-black/10 text-[#1a4a47]"
-            : "bg-white/15 backdrop-blur-md border border-white/25 text-white"
+            ? "bg-white shadow-lg shadow-black/10 text-[#1a4a47]"
+            : "bg-white/95 backdrop-blur-md shadow-lg shadow-black/10 text-[#1a4a47]"
         }`}
       >
-        <button
-          type="button"
-          aria-label="Toggle navigation"
-          aria-expanded={open}
-          onClick={() => setOpen((prev) => !prev)}
-          className="flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center"
-        >
-          <Home size={16} strokeWidth={1.75} />
-        </button>
-
+        {/* Links expand to the LEFT of the MENU button */}
         <motion.div
           initial={false}
           animate={{
@@ -84,15 +75,24 @@ export default function Nav() {
                 key={link}
                 href={hrefs[i]}
                 onClick={() => setOpen(false)}
-                className={`px-3 py-2 rounded-full whitespace-nowrap text-xs sm:text-sm transition-colors duration-200 ${
-                  scrolled ? "hover:bg-[#1a4a47]/10 hover:text-[#1a4a47]" : "hover:bg-white/15"
-                }`}
+                className="px-3 py-2 rounded-full whitespace-nowrap text-xs sm:text-sm transition-colors duration-200 hover:bg-[#1a4a47]/10 hover:text-[#1a4a47]"
               >
                 {link}
               </a>
             ))}
           </div>
         </motion.div>
+
+        <button
+          type="button"
+          aria-label="Toggle navigation"
+          aria-expanded={open}
+          onClick={() => setOpen((prev) => !prev)}
+          className="flex-shrink-0 h-9 pl-3 pr-2 rounded-full flex items-center gap-2 text-xs font-semibold tracking-[0.15em] uppercase"
+        >
+          Menu
+          <Menu size={16} strokeWidth={2} />
+        </button>
       </div>
     </nav>
   );
