@@ -1,108 +1,128 @@
-import { useRef, useEffect, useState } from "react";
-import { useReveal } from "../hooks/useReveal";
+import { useEffect, useRef, useState } from "react";
 
-const stats = [
-  {
-    height: "h-40",
-    number: "1 in 10",
-    label: "Girls are abused before they turn 18 years",
-    delay: 0,
-  },
-  {
-    height: "h-56",
-    number: "1 in 5",
-    label: "Boys are abused before they turn 18 years",
-    delay: 150,
-  },
-  {
-    height: "h-72",
-    number: "52% to 55%",
-    label: "Of Nigerian cases go unreported",
-    delay: 300,
-  },
-  {
-    height: "h-80",
-    number: "18–20x",
-    label: "More 18-to-20-year-olds convicted than 10-to-17-year-olds",
-    delay: 450,
-  },
-];
+// ---- Isometric bar chart geometry ----
+// Each bar is drawn from a single height value so it can be animated by a
+// rAF tween. Faces share exact corner points, so seams line up perfectly.
+const BAR_W = 74; // front face width
+const DEPTH_X = 34; // how far the depth goes to the right
+const DEPTH_Y = 26; // how far the depth rises upward
+const GAP = 46; // gap between bars
+const BASELINE = 540; // y of the bottom of the bars
+const LEFT = 24; // left padding before first bar
 
-function StatPillar({ stat, visible }: { stat: typeof stats[0]; visible: boolean }) {
-  return (
-    <div className="flex flex-col items-center gap-4">
-      {/* Floating card */}
-      <div
-        className="bg-white rounded-xl p-4 w-44 text-center shadow-lg shadow-black/20 transition-all duration-[1400ms]"
-        style={{
-          opacity: visible ? 1 : 0,
-          transform: visible ? "translateY(0)" : "translateY(20px)",
-          transitionDelay: `${stat.delay + 200}ms`,
-        }}
-      >
-        <div className="text-[#1a4a47] font-display font-bold text-xl leading-tight mb-1">
-          {stat.number}
-        </div>
-        <div className="text-gray-700 text-xs leading-tight">{stat.label}</div>
-      </div>
+const FRONT = "#072e29";
+const SIDE = "#16897e";
+const TOP = "#1ee8d6";
 
-      {/* Pillar */}
-      <div
-        className={`w-12 sm:w-14 rounded-t-xl bg-gradient-to-t from-[#0d2422] to-[#3d9e96] transition-all duration-[1600ms] ease-out ${stat.height}`}
-        style={{
-          opacity: visible ? 1 : 0,
-          transform: visible ? "scaleY(1)" : "scaleY(0)",
-          transformOrigin: "bottom",
-          transitionDelay: `${stat.delay}ms`,
-        }}
-      />
-    </div>
-  );
+const fullHeights = [190, 320, 450];
+
+const VB_W = LEFT * 2 + 3 * BAR_W + 2 * GAP + DEPTH_X;
+// viewBox is shorter than the baseline so the bar bases run off the
+// bottom edge (clipped) instead of free-hanging.
+const VB_H = 470;
+
+function barFaces(index: number, h: number) {
+  const bx = LEFT + index * (BAR_W + GAP);
+  const by = BASELINE;
+  const topY = by - h;
+
+  // front face (rectangle)
+  const front = `${bx},${topY} ${bx + BAR_W},${topY} ${bx + BAR_W},${by} ${bx},${by}`;
+
+  // side face (right parallelogram)
+  const side = `${bx + BAR_W},${topY} ${bx + BAR_W + DEPTH_X},${topY - DEPTH_Y} ${bx + BAR_W + DEPTH_X},${by - DEPTH_Y} ${bx + BAR_W},${by}`;
+
+  // top face (parallelogram cap)
+  const top = `${bx},${topY} ${bx + BAR_W},${topY} ${bx + BAR_W + DEPTH_X},${topY - DEPTH_Y} ${bx + DEPTH_X},${topY - DEPTH_Y}`;
+
+  return { front, side, top };
 }
 
 export default function TheData() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-  const introRef = useReveal();
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const [heights, setHeights] = useState<number[]>([0, 0, 0]);
 
   useEffect(() => {
-    const el = ref.current;
+    const el = sectionRef.current;
     if (!el) return;
     const obs = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) { setVisible(true); obs.disconnect(); }
+        if (entry.isIntersecting) {
+          runAnimation();
+          obs.disconnect();
+        }
       },
-      { threshold: 0.2 }
+      { threshold: 0.3 }
     );
     obs.observe(el);
     return () => obs.disconnect();
   }, []);
 
+  const runAnimation = () => {
+    const DURATION = 900; // per bar
+    const STAGGER = 450; // delay between bars starting
+
+    fullHeights.forEach((target, i) => {
+      const start = performance.now() + i * STAGGER;
+      const tick = (now: number) => {
+        if (now < start) {
+          requestAnimationFrame(tick);
+          return;
+        }
+        const t = Math.min((now - start) / DURATION, 1);
+        // ease-out cubic
+        const eased = 1 - Math.pow(1 - t, 3);
+        setHeights((prev) => {
+          const next = [...prev];
+          next[i] = target * eased;
+          return next;
+        });
+        if (t < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    });
+  };
+
   return (
-    <section id="data" className="bg-[#1a4a47] pt-32 sm:pt-40 lg:pt-48 pb-24 sm:pb-32 px-6 sm:px-12 lg:px-20">
-      <div className="max-w-6xl mx-auto">
-        {/* Label + copy */}
-        <div ref={introRef} className="mb-20">
-          <span className="text-[#3d9e96] text-xs tracking-[0.3em] font-medium uppercase">
-            / The Data
+    <section
+      id="data"
+      className="relative bg-[#0e3431] overflow-hidden min-h-[640px] sm:min-h-[760px] lg:min-h-[860px]"
+    >
+      <div
+        ref={sectionRef}
+        className="relative max-w-7xl mx-auto h-full min-h-[inherit] px-6 sm:px-12 lg:px-20 py-20 sm:py-28 lg:py-32"
+      >
+        {/* Label + copy, top-left */}
+        <div className="relative z-10 max-w-xl">
+          <span className="block mb-6 text-sm tracking-[0.2em] font-semibold uppercase">
+            <span className="text-[#2ee8d5]">/</span> <span className="text-white">The Data</span>
           </span>
-          <p className="mt-6 text-white/80 text-base sm:text-lg leading-relaxed max-w-2xl font-light">
+          <p className="text-white/90 text-lg sm:text-xl leading-relaxed font-light">
             In Nigeria, alarming statistics reveal that 1 in 10 girls and 1 in 5 boys are abused
-            before they turn 18. Shockingly, 52% to 55% of rape cases go unreported, and during
-            the lockdown, 3,655 rape cases were reported with a mere 18–20x resulting in
+            before they turn ten. Shockingly, 50% to 90% of rape cases go unreported, and during
+            the lockdown, 3,600 rape cases were reported, with a mere 18–20 resulting in
             convictions — a major gap in justice.
           </p>
         </div>
 
-        {/* Pillars */}
-        <div ref={ref} className="flex items-end justify-center gap-4 sm:gap-8 overflow-x-auto pb-4">
-          {stats.map((stat, i) => (
-            <StatPillar key={i} stat={stat} visible={visible} />
-          ))}
-        </div>
-
-        {/* Floor line */}
-        <div className="mt-0 h-px bg-gradient-to-r from-transparent via-[#3d9e96]/50 to-transparent" />
+        {/* Chart, anchored bottom-right and clipped at the section's bottom edge */}
+        <svg
+          viewBox={`0 0 ${VB_W} ${VB_H}`}
+          preserveAspectRatio="xMidYMax meet"
+          className="absolute bottom-0 right-0 w-[62%] sm:w-[56%] lg:w-[52%] max-w-2xl"
+        >
+          {heights.map((h, i) => {
+            if (h <= 0.5) return null;
+            const f = barFaces(i, h);
+            return (
+              <g key={i}>
+                <polygon points={f.front} fill={FRONT} />
+                <polygon points={f.side} fill={SIDE} />
+                <polygon points={f.top} fill={TOP} />
+              </g>
+            );
+          })}
+        </svg>
       </div>
     </section>
   );

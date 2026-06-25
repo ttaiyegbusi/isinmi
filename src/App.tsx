@@ -1,5 +1,6 @@
 import Nav from "./components/Nav";
 import Hero from "./components/Hero";
+import CustomCursor from "./components/CustomCursor";
 import AboutUs from "./components/AboutUs";
 import TheData from "./components/TheData";
 import MissionStatement from "./components/MissionStatement";
@@ -11,6 +12,7 @@ import Footer from "./components/Footer";
 function App() {
   return (
     <main>
+      <CustomCursor />
       <Nav />
       <Hero />
       <AboutUs />

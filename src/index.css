@@ -117,3 +117,44 @@ body {
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
+
+/* Custom cursor */
+body.custom-cursor-active,
+body.custom-cursor-active * {
+  cursor: none !important;
+}
+
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  pointer-events: none;
+  border-radius: 50%;
+  opacity: 0;
+}
+
+.cursor-dot {
+  width: 5px;
+  height: 5px;
+  background: #ffffff;
+  transition: opacity 0.2s ease;
+}
+
+.cursor-ring {
+  width: 26px;
+  height: 26px;
+  border: 1.5px solid rgba(255, 255, 255, 0.75);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.25);
+  transition: width 0.25s cubic-bezier(0.19, 1, 0.22, 1),
+    height 0.25s cubic-bezier(0.19, 1, 0.22, 1),
+    opacity 0.2s ease,
+    background 0.25s ease;
+}
+
+.cursor-ring.is-active {
+  width: 20px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.15);
+}
