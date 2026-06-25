@@ -139,7 +139,11 @@ body.custom-cursor-active * {
   width: 5px;
   height: 5px;
   background: #ffffff;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.2s ease, background-color 0.3s ease;
+}
+
+.cursor-dot.on-light {
+  background: #1a4a47;
 }
 
 .cursor-ring {
@@ -150,11 +154,78 @@ body.custom-cursor-active * {
   transition: width 0.25s cubic-bezier(0.19, 1, 0.22, 1),
     height 0.25s cubic-bezier(0.19, 1, 0.22, 1),
     opacity 0.2s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
     background 0.25s ease;
+}
+
+.cursor-ring.on-light {
+  border-color: rgba(26, 74, 71, 0.85);
+  box-shadow: 0 0 12px rgba(26, 74, 71, 0.18);
 }
 
 .cursor-ring.is-active {
   width: 20px;
   height: 20px;
   background: rgba(255, 255, 255, 0.15);
+}
+
+.cursor-ring.on-light.is-active {
+  background: rgba(26, 74, 71, 0.12);
+}
+
+/* Slightly larger ring while over the hero (sound CTA active) */
+.cursor-ring.is-hero {
+  width: 46px;
+  height: 46px;
+}
+
+/* Our Reach hover panel */
+.reach-pop {
+  transform: translate(-50%, -50%) scale(1);
+  animation: reachPop 0.5s cubic-bezier(0.19, 1, 0.22, 1) both;
+}
+
+@keyframes reachPop {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) translateY(10px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) translateY(0) scale(1);
+  }
+}
+
+.reach-fade {
+  animation: reachFade 0.55s cubic-bezier(0.19, 1, 0.22, 1) both;
+  animation-delay: 0.08s;
+}
+
+@keyframes reachFade {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cursor-cta {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  pointer-events: none;
+  white-space: nowrap;
+  font-family: "Manrope", system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.9);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }

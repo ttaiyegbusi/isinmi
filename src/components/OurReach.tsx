@@ -1,73 +1,134 @@
+import { useState } from "react";
 import { useReveal } from "../hooks/useReveal";
 
-const locations = [
-  "Nigeria",
-  "Uganda",
-  "Rwanda",
-  "Kenya",
-  "Ethiopia",
-  "Malawi",
-  "Democratic Republic of Congo",
-  "South Africa",
-  "Ghana",
-  "Burundi",
+const EASE = "cubic-bezier(0.19,1,0.22,1)";
+
+type Country = {
+  name: string;
+  query: string; // Unsplash keyword(s)
+  blurb: string;
+};
+
+const countries: Country[] = [
+  { name: "Nigeria", query: "Lagos,Nigeria", blurb: "Where Ìsinmi began — building survivor hubs across Lagos and beyond." },
+  { name: "Uganda", query: "Kampala,Uganda", blurb: "Partnering with local advocates to open safe spaces in Kampala." },
+  { name: "Rwanda", query: "Kigali,Rwanda", blurb: "Community-led healing circles taking root in Kigali." },
+  { name: "Kenya", query: "Nairobi,Kenya", blurb: "Connecting survivors to mental health and legal support in Nairobi." },
+  { name: "Ethiopia", query: "Addis-Ababa,Ethiopia", blurb: "Growing peer-support networks across Addis Ababa." },
+  { name: "Malawi", query: "Malawi,Africa", blurb: "Education-first programs reaching rural communities." },
+  { name: "Democratic Republic of Congo", query: "Kinshasa,Congo", blurb: "Reaching survivors in conflict-affected regions with care and refuge." },
+  { name: "South Africa", query: "Cape-Town,South-Africa", blurb: "Scaling advocacy and accommodation support in Cape Town and Johannesburg." },
+  { name: "Ghana", query: "Accra,Ghana", blurb: "Building awareness and mentorship pathways in Accra." },
+  { name: "Burundi", query: "Bujumbura,Burundi", blurb: "Establishing our first survivor outreach in Bujumbura." },
 ];
 
+// Keyword-based free image service (relates the photo to the country).
+// Swap for self-hosted images later by changing this one function.
+const imgUrl = (q: string) => `https://loremflickr.com/420/300/${q}`;
+
 export default function OurReach() {
-  const leftRef = useReveal(0);
-  const rightRef = useReveal(150);
+  const headerRef = useReveal<HTMLDivElement>();
+  const [active, setActive] = useState<number | null>(null);
 
   return (
-    <section id="reach" className="bg-[#f7f5f2] py-24 sm:py-32 px-6 sm:px-12 lg:px-20">
-      <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20">
-          {/* Left */}
-          <div ref={leftRef} className="space-y-8">
-            <span className="text-[#1a4a47] text-xs tracking-[0.3em] font-medium uppercase">
-              / Our Reach
+    <section id="reach" className="bg-[#f7f9f8] py-28 sm:py-36 lg:py-44">
+      {/* Header */}
+      <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-20">
+        <div
+          ref={headerRef}
+          className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-10 lg:gap-16 mb-20 lg:mb-28"
+        >
+          <div>
+            <span className="text-sm font-semibold tracking-[0.2em] uppercase">
+              <span className="text-[#1a4a47]">/</span>{" "}
+              <span className="text-gray-900">Our Reach</span>
             </span>
-            <p className="text-gray-700 text-base sm:text-lg leading-relaxed font-light max-w-md">
-              We're daring enough to believe in creating a safe space for survivors and putting an
-              end to sexual abuse across Africa. Over the next decade, our goal is to impact around
-              51,000 survivors spanning ten countries.
-            </p>
-
-            {/* Featured image */}
-            <div className="overflow-hidden rounded-2xl aspect-[4/3]">
-              <img
-                src="https://images.unsplash.com/photo-1534751516642-a1af1ef26a56?w=900&q=80&fit=crop"
-                alt="Nigerian community"
-                className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
-                loading="lazy"
-              />
-            </div>
           </div>
-
-          {/* Right — location list */}
-          <div ref={rightRef} className="pt-0 lg:pt-14">
-            <ul className="space-y-0">
-              {locations.map((loc, i) => (
-                <li
-                  key={loc}
-                  className={`flex items-center gap-4 py-4 border-b border-gray-200/80 group cursor-default ${
-                    i === 0 ? "border-t" : ""
-                  }`}
-                >
-                  <span className="w-2 h-2 rounded-full bg-[#1a4a47] flex-shrink-0 group-hover:scale-125 transition-transform duration-200" />
-                  <span className="text-gray-800 text-base sm:text-lg font-medium group-hover:text-[#1a4a47] transition-colors duration-200">
-                    {loc}
-                  </span>
-                  {i === 0 && (
-                    <span className="ml-auto text-xs text-[#1a4a47] font-medium tracking-wide bg-[#1a4a47]/10 px-2 py-0.5 rounded-full">
-                      Primary
-                    </span>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
+          <p className="text-gray-600 text-lg sm:text-xl leading-relaxed font-light max-w-xl">
+            We're daring enough to believe in creating a safe space for survivors and putting an
+            end to sexual abuse across Africa. Over the next decade, our goal is to impact around
+            10,000 survivors spanning ten countries:
+          </p>
         </div>
       </div>
+
+      {/* Full-bleed country list */}
+      <ul className="border-t border-gray-200">
+        {countries.map((c, i) => {
+          const isActive = active === i;
+          return (
+            <li
+              key={c.name}
+              onMouseEnter={() => setActive(i)}
+              onMouseLeave={() => setActive(null)}
+              className="relative border-b border-gray-200 overflow-visible"
+              style={{
+                background: isActive ? "#0e3431" : "transparent",
+                transition: `background 0.45s ${EASE}`,
+                zIndex: isActive ? 20 : 1,
+              }}
+            >
+              <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-20">
+                <div
+                  className="relative flex items-center"
+                  style={{
+                    height: isActive ? 150 : 86,
+                    transition: `height 0.45s ${EASE}`,
+                  }}
+                >
+                  {/* + marker */}
+                  <span
+                    className="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-base leading-none"
+                    style={{
+                      border: `1px solid ${isActive ? "rgba(255,255,255,0.5)" : "rgba(17,24,28,0.3)"}`,
+                      color: isActive ? "#ffffff" : "#0e3431",
+                      transition: `color 0.45s ${EASE}, border-color 0.45s ${EASE}`,
+                    }}
+                  >
+                    +
+                  </span>
+
+                  {/* country name */}
+                  <span
+                    className="ml-6 text-xl sm:text-2xl font-medium"
+                    style={{
+                      color: isActive ? "#ffffff" : "#15201e",
+                      transition: `color 0.45s ${EASE}`,
+                    }}
+                  >
+                    {c.name}
+                  </span>
+
+                  {/* hover panel: image (center) + blurb (right) */}
+                  {isActive && (
+                    <>
+                      <div
+                        key={`img-${c.name}`}
+                        className="reach-pop absolute left-1/2 top-1/2 hidden md:block rounded-lg overflow-hidden shadow-2xl shadow-black/40"
+                        style={{ width: 230, height: 215, zIndex: 25 }}
+                      >
+                        <img
+                          src={imgUrl(c.query)}
+                          alt={c.name}
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                        />
+                      </div>
+
+                      <p
+                        key={`txt-${c.name}`}
+                        className="reach-fade absolute right-0 hidden lg:block text-white/80 text-sm leading-relaxed max-w-xs"
+                      >
+                        {c.blurb}
+                      </p>
+                    </>
+                  )}
+                </div>
+              </div>
+            </li>
+          );
+        })}
+      </ul>
     </section>
   );
 }
