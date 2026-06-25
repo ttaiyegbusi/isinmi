@@ -11,6 +11,15 @@ export default function Nav() {
   const navRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const [contentWidth, setContentWidth] = useState(0);
+  const [canHover, setCanHover] = useState(true);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const update = () => setCanHover(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
 
   useLayoutEffect(() => {
     const measure = () => {
@@ -45,8 +54,8 @@ export default function Nav() {
     <nav
       ref={navRef}
       className="fixed top-5 right-5 z-50"
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
+      onMouseEnter={canHover ? () => setOpen(true) : undefined}
+      onMouseLeave={canHover ? () => setOpen(false) : undefined}
     >
       <div
         className={`flex items-center rounded-full text-sm font-medium overflow-hidden p-[6px] transition-colors duration-300 ${
@@ -55,7 +64,7 @@ export default function Nav() {
             : "bg-white/95 backdrop-blur-md shadow-lg shadow-black/10 text-[#1a4a47]"
         }`}
       >
-        {/* Links expand to the LEFT of the MENU button */}
+        {/* Desktop: links expand horizontally to the LEFT of the MENU button */}
         <motion.div
           initial={false}
           animate={{
@@ -67,7 +76,7 @@ export default function Nav() {
             opacity: { duration: open ? 0.35 : 0.2, ease: "easeInOut" },
           }}
           style={{ overflow: "hidden" }}
-          className="flex items-center"
+          className="hidden sm:flex items-center"
         >
           <div ref={contentRef} className="flex items-center">
             {links.map((link, i) => (
@@ -94,6 +103,31 @@ export default function Nav() {
           <Menu size={16} strokeWidth={2} />
         </button>
       </div>
+
+      {/* Mobile: links drop down vertically below the pill */}
+      <motion.div
+        initial={false}
+        animate={{
+          opacity: open ? 1 : 0,
+          y: open ? 0 : -8,
+          pointerEvents: open ? "auto" : "none",
+        }}
+        transition={{ duration: 0.25, ease: [0.32, 0.72, 0, 1] }}
+        className="sm:hidden absolute right-0 top-[calc(100%+10px)] origin-top-right"
+      >
+        <div className="flex flex-col bg-white rounded-2xl shadow-xl shadow-black/15 p-2 min-w-[200px]">
+          {links.map((link, i) => (
+            <a
+              key={link}
+              href={hrefs[i]}
+              onClick={() => setOpen(false)}
+              className="px-4 py-3 rounded-xl text-sm font-medium text-[#1a4a47] hover:bg-[#1a4a47]/10 transition-colors duration-200"
+            >
+              {link}
+            </a>
+          ))}
+        </div>
+      </motion.div>
     </nav>
   );
 }

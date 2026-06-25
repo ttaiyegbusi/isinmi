@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useReveal } from "../hooks/useReveal";
 
 const EASE = "cubic-bezier(0.19,1,0.22,1)";
@@ -29,6 +29,15 @@ const imgUrl = (q: string) => `https://loremflickr.com/420/300/${q}`;
 export default function OurReach() {
   const headerRef = useReveal<HTMLDivElement>();
   const [active, setActive] = useState<number | null>(null);
+  const [canHover, setCanHover] = useState(true);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const update = () => setCanHover(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
 
   return (
     <section id="reach" className="bg-[#f7f9f8] py-28 sm:py-36 lg:py-44">
@@ -56,23 +65,30 @@ export default function OurReach() {
       <ul className="border-t border-gray-200">
         {countries.map((c, i) => {
           const isActive = active === i;
+          const hoverHandlers = canHover
+            ? {
+                onMouseEnter: () => setActive(i),
+                onMouseLeave: () => setActive(null),
+              }
+            : {};
           return (
             <li
               key={c.name}
-              onMouseEnter={() => setActive(i)}
-              onMouseLeave={() => setActive(null)}
+              {...hoverHandlers}
+              onClick={canHover ? undefined : () => setActive(isActive ? null : i)}
               className="relative border-b border-gray-200 overflow-visible"
               style={{
                 background: isActive ? "#0e3431" : "transparent",
                 transition: `background 0.45s ${EASE}`,
                 zIndex: isActive ? 20 : 1,
+                cursor: canHover ? "default" : "pointer",
               }}
             >
               <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-20">
                 <div
                   className="relative flex items-center"
                   style={{
-                    height: isActive ? 150 : 86,
+                    height: isActive && canHover ? 150 : 86,
                     transition: `height 0.45s ${EASE}`,
                   }}
                 >
@@ -83,6 +99,7 @@ export default function OurReach() {
                       border: `1px solid ${isActive ? "rgba(255,255,255,0.5)" : "rgba(17,24,28,0.3)"}`,
                       color: isActive ? "#ffffff" : "#0e3431",
                       transition: `color 0.45s ${EASE}, border-color 0.45s ${EASE}`,
+                      transform: isActive ? "rotate(45deg)" : "rotate(0deg)",
                     }}
                   >
                     +
@@ -99,8 +116,8 @@ export default function OurReach() {
                     {c.name}
                   </span>
 
-                  {/* hover panel: image (center) + blurb (right) */}
-                  {isActive && (
+                  {/* Desktop hover panel: image (center) + blurb (right) */}
+                  {canHover && isActive && (
                     <>
                       <div
                         key={`img-${c.name}`}
@@ -124,6 +141,34 @@ export default function OurReach() {
                     </>
                   )}
                 </div>
+
+                {/* Touch accordion panel: image + blurb stacked, revealed on tap */}
+                {!canHover && (
+                  <div
+                    className="overflow-hidden"
+                    style={{
+                      maxHeight: isActive ? 360 : 0,
+                      opacity: isActive ? 1 : 0,
+                      transition: `max-height 0.5s ${EASE}, opacity 0.4s ${EASE}`,
+                    }}
+                  >
+                    <div className="pb-7">
+                      <div className="rounded-xl overflow-hidden mb-4 aspect-[16/10]">
+                        {isActive && (
+                          <img
+                            src={imgUrl(c.query)}
+                            alt={c.name}
+                            className="w-full h-full object-cover"
+                            loading="lazy"
+                          />
+                        )}
+                      </div>
+                      <p className="text-white/80 text-sm sm:text-base leading-relaxed max-w-md">
+                        {c.blurb}
+                      </p>
+                    </div>
+                  </div>
+                )}
               </div>
             </li>
           );
