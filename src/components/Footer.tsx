@@ -10,13 +10,28 @@ const navLinks = [
 
 export default function Footer() {
   const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
+  const [website, setWebsite] = useState(""); // honeypot
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) {
-      setSubmitted(true);
+    if (status === "loading") return;
+    setStatus("loading");
+    setErrorMsg("");
+    try {
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, website }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || "Something went wrong. Please try again.");
+      setStatus("success");
       setEmail("");
+    } catch (err) {
+      setStatus("error");
+      setErrorMsg(err instanceof Error ? err.message : "Something went wrong. Please try again.");
     }
   };
 
@@ -41,7 +56,7 @@ export default function Footer() {
           </div>
 
           <div className="lg:pt-4">
-            {submitted ? (
+            {status === "success" ? (
               <div className="bg-white rounded-full px-7 py-5 flex items-center gap-3 text-[#0e3431] font-medium">
                 <span className="w-5 h-5 rounded-full bg-[#0e3431] text-white flex items-center justify-center text-xs">
                   ✓
@@ -49,25 +64,42 @@ export default function Footer() {
                 Thank you — you're on the list.
               </div>
             ) : (
-              <form
-                onSubmit={handleSubmit}
-                className="bg-white rounded-full p-2 flex items-center w-full shadow-lg shadow-black/10"
-              >
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
-                  required
-                  className="flex-1 min-w-0 bg-transparent px-5 py-3 text-[#0e3431] placeholder:text-gray-400 focus:outline-none"
-                />
-                <button
-                  type="submit"
-                  className="flex-shrink-0 bg-[#0e3431] hover:bg-[#15403b] text-white rounded-full px-6 sm:px-8 py-3 font-medium whitespace-nowrap transition-colors"
+              <>
+                <form
+                  onSubmit={handleSubmit}
+                  className="bg-white rounded-full p-2 flex items-center w-full shadow-lg shadow-black/10"
                 >
-                  Join us !
-                </button>
-              </form>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter your email"
+                    required
+                    disabled={status === "loading"}
+                    className="flex-1 min-w-0 bg-transparent px-5 py-3 text-[#0e3431] placeholder:text-gray-400 focus:outline-none"
+                  />
+                  {/* honeypot - hidden from users */}
+                  <input
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={website}
+                    onChange={(e) => setWebsite(e.target.value)}
+                    className="absolute -left-[9999px] w-px h-px opacity-0"
+                    aria-hidden="true"
+                  />
+                  <button
+                    type="submit"
+                    disabled={status === "loading"}
+                    className="flex-shrink-0 bg-[#0e3431] hover:bg-[#15403b] text-white rounded-full px-6 sm:px-8 py-3 font-medium whitespace-nowrap transition-colors disabled:opacity-60"
+                  >
+                    {status === "loading" ? "Joining…" : "Join us !"}
+                  </button>
+                </form>
+                {status === "error" && (
+                  <p className="mt-3 ml-2 text-sm text-[#ffb4a8]">{errorMsg}</p>
+                )}
+              </>
             )}
           </div>
         </div>
