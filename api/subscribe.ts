@@ -1,9 +1,8 @@
+import { Resend } from "resend";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-// Adds a subscriber's email to a Resend Audience.
-// Requires env vars: RESEND_API_KEY, RESEND_AUDIENCE_ID
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
@@ -21,29 +20,24 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const apiKey = process.env.RESEND_API_KEY;
-  const audienceId = process.env.RESEND_AUDIENCE_ID;
-  if (!apiKey || !audienceId) {
-    console.error("Missing RESEND_API_KEY or RESEND_AUDIENCE_ID");
+  if (!apiKey) {
+    console.error("Missing RESEND_API_KEY");
     return res.status(500).json({ error: "Email service is not configured yet." });
   }
 
   try {
-    const r = await fetch(`https://api.resend.com/audiences/${audienceId}/contacts`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, unsubscribed: false }),
+    const resend = new Resend(apiKey);
+    const { data, error } = await resend.contacts.create({
+      email,
+      unsubscribed: false,
     });
 
-    if (!r.ok) {
-      const detail = await r.text();
+    if (error) {
+      console.error("Resend error", error);
       // Already subscribed -> treat as success.
-      if (r.status === 409 || /already|exists/i.test(detail)) {
+      if (error.code === "unprocessable_entity" || error.message?.includes("already")) {
         return res.status(200).json({ ok: true, alreadySubscribed: true });
       }
-      console.error("Resend error", r.status, detail);
       return res.status(502).json({ error: "Could not subscribe right now. Please try again." });
     }
 
