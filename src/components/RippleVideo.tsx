@@ -224,28 +224,42 @@ export default function RippleVideo({ src, poster, textRefs, textVisible }: Prop
     let lastX = -1;
     let lastY = -1;
 
-    const onPointerMove = (e: PointerEvent) => {
-      const rect = container.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = rect.height - (e.clientY - rect.top);
+    const pushRipple = (x: number, y: number) => {
       const now = performance.now() / 1000;
-
-      const dx = x - lastX;
-      const dy = y - lastY;
-      const moved = lastX < 0 || Math.hypot(dx, dy) > 6;
-
-      if (moved && now - lastPush > 0.035) {
+      if (now - lastPush > 0.035) {
         ripples[rippleIndex * 3 + 0] = x;
         ripples[rippleIndex * 3 + 1] = y;
         ripples[rippleIndex * 3 + 2] = now;
         rippleIndex = (rippleIndex + 1) % MAX_RIPPLES;
         lastPush = now;
+      }
+    };
+
+    const onPointerMove = (e: PointerEvent) => {
+      const rect = container.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = rect.height - (e.clientY - rect.top);
+
+      const dx = x - lastX;
+      const dy = y - lastY;
+      const moved = lastX < 0 || Math.hypot(dx, dy) > 6;
+
+      if (moved) {
+        pushRipple(x, y);
         lastX = x;
         lastY = y;
       }
     };
 
+    const onPointerDown = (e: PointerEvent) => {
+      const rect = container.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = rect.height - (e.clientY - rect.top);
+      pushRipple(x, y);
+    };
+
     container.addEventListener("pointermove", onPointerMove);
+    container.addEventListener("pointerdown", onPointerDown);
 
     let raf = 0;
     const startTime = performance.now();
@@ -272,6 +286,7 @@ export default function RippleVideo({ src, poster, textRefs, textVisible }: Prop
       video.removeEventListener("loadedmetadata", setAspect);
       video.removeEventListener("canplay", tryPlay);
       container.removeEventListener("pointermove", onPointerMove);
+      container.removeEventListener("pointerdown", onPointerDown);
     };
   }, []);
 
