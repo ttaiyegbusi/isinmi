@@ -1,6 +1,8 @@
-import { useState, useRef, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useReveal } from "../hooks/useReveal";
+
+const CARD_STEP = 350; // card width + gap, used for arrow nudges
 
 const testimonials = [
   {
@@ -32,129 +34,191 @@ const testimonials = [
     role: "Survivor, Enugu",
     initials: "CA",
     color: "#0d5c58",
+    quote: "The mentorship I received through Isinmi helped me navigate the legal process. I didn't have to do it alone, and that made all the difference.",
+  },
+  {
+    name: "Halima S.",
+    role: "Volunteer, Kano",
+    initials: "HS",
+    color: "#2a7a74",
+    quote: "Isinmi is the safe space I wish existed when I was younger.",
+  },
+  {
+    name: "Tobi A.",
+    role: "Survivor, Ibadan",
+    initials: "TA",
+    color: "#1a4a47",
     quote:
-      "The mentorship I received through Isinmi helped me navigate the legal process. I didn't have to do it alone, and that made all the difference.",
+      "For the first time, I felt heard without judgment. The people here meet you exactly where you are, and they walk with you for as long as it takes to feel whole again.",
   },
 ];
 
-export default function Testimonials() {
-  const [active, setActive] = useState(0);
-  const cardRef = useRef<HTMLDivElement>(null);
-  const headerRef = useReveal();
-  const cardsRowRef = useReveal(100);
+// duplicated for a seamless right-to-left loop
+const loop = [...testimonials, ...testimonials];
 
-  const go = (dir: 1 | -1) => {
-    if (cardRef.current) {
-      cardRef.current.style.opacity = "0";
-      cardRef.current.style.transform = `translateX(${dir > 0 ? 40 : -40}px)`;
-    }
-    setTimeout(() => {
-      setActive((prev) => (prev + dir + testimonials.length) % testimonials.length);
-      if (cardRef.current) {
-        cardRef.current.style.transition = "none";
-        cardRef.current.style.opacity = "0";
-        cardRef.current.style.transform = `translateX(${dir > 0 ? -40 : 40}px)`;
-        setTimeout(() => {
-          if (cardRef.current) {
-            cardRef.current.style.transition = "opacity 0.5s ease, transform 0.5s ease";
-            cardRef.current.style.opacity = "1";
-            cardRef.current.style.transform = "translateX(0)";
-          }
-        }, 20);
-      }
-    }, 250);
-  };
+export default function Testimonials() {
+  const headerRef = useReveal<HTMLDivElement>();
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [hovered, setHovered] = useState<number | null>(null);
+
+  const offset = useRef(0);
+  const setWidth = useRef(0);
+  const paused = useRef(false);
+  const dragging = useRef(false);
+  const dragStartX = useRef(0);
+  const dragStartOffset = useRef(0);
+  const nudge = useRef(0);
 
   useEffect(() => {
-    if (cardRef.current) {
-      cardRef.current.style.transition = "opacity 0.5s ease, transform 0.5s ease";
-    }
+    const measure = () => {
+      if (trackRef.current) setWidth.current = trackRef.current.scrollWidth / 2;
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    if (trackRef.current) ro.observe(trackRef.current);
+    document.fonts?.ready?.then(measure);
+
+    let raf = 0;
+    let last = performance.now();
+    const tick = (now: number) => {
+      const dt = now - last;
+      last = now;
+      if (Math.abs(nudge.current) > 0.5) {
+        // smooth eased arrow nudge takes priority
+        const step = nudge.current * 0.12;
+        offset.current += step;
+        nudge.current -= step;
+      } else if (!paused.current && !dragging.current) {
+        offset.current -= 0.045 * dt; // px per ms -> right-to-left drift
+      }
+      const w = setWidth.current;
+      if (w > 0) {
+        if (offset.current <= -w) offset.current += w;
+        if (offset.current > 0) offset.current -= w;
+      }
+      if (trackRef.current) {
+        trackRef.current.style.transform = `translate3d(${offset.current}px,0,0)`;
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => {
+      cancelAnimationFrame(raf);
+      ro.disconnect();
+    };
   }, []);
 
+  const onPointerDown = (e: React.PointerEvent) => {
+    dragging.current = true;
+    dragStartX.current = e.clientX;
+    dragStartOffset.current = offset.current;
+    (e.currentTarget as HTMLElement).setPointerCapture?.(e.pointerId);
+  };
+  const onPointerMove = (e: React.PointerEvent) => {
+    if (!dragging.current) return;
+    let next = dragStartOffset.current + (e.clientX - dragStartX.current);
+    const w = setWidth.current;
+    if (w > 0) {
+      while (next <= -w) next += w;
+      while (next > 0) next -= w;
+    }
+    offset.current = next;
+  };
+  const onPointerUp = () => {
+    dragging.current = false;
+  };
 
+  // arrow nudge: next (1) drifts left, prev (-1) drifts right
+  const go = (dir: 1 | -1) => {
+    nudge.current += -dir * CARD_STEP;
+  };
 
   return (
-    <section id="testimonials" className="bg-white py-24 sm:py-32 px-6 sm:px-12 lg:px-20">
-      <div className="max-w-6xl mx-auto">
-        {/* Header row */}
-        <div ref={headerRef} className="flex items-end justify-between mb-16 flex-wrap gap-6">
+    <section id="testimonials" className="bg-white py-28 sm:py-36 lg:py-44 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-20 mb-16">
+        <div ref={headerRef} className="flex items-start justify-between gap-6">
           <div>
-            <span className="text-[#1a4a47] text-xs tracking-[0.3em] font-medium uppercase">
-              / Testimonials
+            <span className="text-sm font-semibold tracking-[0.2em] uppercase">
+              <span className="text-[#1a4a47]">/</span>{" "}
+              <span className="text-gray-900">Testimonials</span>
             </span>
-            <h2 className="mt-4 font-display font-bold text-3xl sm:text-4xl text-gray-900 leading-tight max-w-sm">
-              Let's see what people have to say about us.
+            <h2 className="mt-5 font-display text-gray-900 leading-[1.1] max-w-md text-[clamp(1.9rem,4vw,3rem)]">
+              Here is what people have to say about us.
             </h2>
           </div>
-          {/* Nav buttons */}
-          <div className="flex gap-3">
+
+          <div className="flex gap-3 flex-shrink-0 pt-2">
             <button
               onClick={() => go(-1)}
-              className="w-12 h-12 rounded-full border-2 border-gray-200 flex items-center justify-center hover:border-[#1a4a47] hover:text-[#1a4a47] transition-all duration-200 group"
               aria-label="Previous testimonial"
+              className="w-12 h-12 rounded-full bg-[#1a4a47] text-white flex items-center justify-center transition-colors duration-200 hover:bg-[#1f5c58]"
             >
-              <ChevronLeft className="w-5 h-5 text-gray-400 group-hover:text-[#1a4a47]" />
+              <ArrowLeft size={18} strokeWidth={2} />
             </button>
             <button
               onClick={() => go(1)}
-              className="w-12 h-12 rounded-full bg-[#1a4a47] flex items-center justify-center hover:bg-[#1f5c58] transition-colors duration-200"
               aria-label="Next testimonial"
+              className="w-12 h-12 rounded-full bg-[#1a4a47] text-white flex items-center justify-center transition-colors duration-200 hover:bg-[#1f5c58]"
             >
-              <ChevronRight className="w-5 h-5 text-white" />
+              <ArrowRight size={18} strokeWidth={2} />
             </button>
           </div>
         </div>
+      </div>
 
-        {/* Cards row */}
-        <div ref={cardsRowRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {testimonials.map((testimonial, i) => (
-            <div
-              key={testimonial.name}
-              onClick={() => setActive(i)}
-              className={`rounded-2xl p-6 cursor-pointer transition-all duration-400 ${
-                i === active
-                  ? "bg-[#1a4a47] shadow-xl shadow-[#1a4a47]/20 scale-[1.02]"
-                  : "bg-gray-50 hover:bg-gray-100"
-              }`}
-            >
-              {/* Avatar */}
+      {/* Infinite, draggable marquee. Pauses on hover; cards size to content. */}
+      <div
+        className="cursor-grab active:cursor-grabbing select-none"
+        onMouseEnter={() => (paused.current = true)}
+        onMouseLeave={() => {
+          paused.current = false;
+          setHovered(null);
+        }}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
+      >
+        <div ref={trackRef} className="flex items-start gap-5 w-max will-change-transform">
+          {loop.map((t, i) => {
+            const isHovered = hovered === i;
+            return (
               <div
-                className="w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-semibold mb-4"
-                style={{ backgroundColor: i === active ? "#3d9e96" : testimonial.color }}
-              >
-                {testimonial.initials}
-              </div>
-              <p
-                className={`text-sm leading-relaxed mb-4 font-light ${
-                  i === active ? "text-white/90" : "text-gray-600"
+                key={i}
+                onMouseEnter={() => setHovered(i)}
+                className={`flex-shrink-0 w-[300px] sm:w-[330px] rounded-2xl p-7 transition-colors duration-300 ${
+                  isHovered
+                    ? "bg-[#0e3431]"
+                    : "bg-[#f4f6f5] border border-gray-100"
                 }`}
               >
-                "{testimonial.quote}"
-              </p>
-              <div>
-                <div className={`font-semibold text-sm ${i === active ? "text-white" : "text-gray-900"}`}>
-                  {testimonial.name}
-                </div>
-                <div className={`text-xs mt-0.5 ${i === active ? "text-white/60" : "text-gray-400"}`}>
-                  {testimonial.role}
+                <p
+                  className={`text-sm sm:text-[15px] leading-relaxed font-light ${
+                    isHovered ? "text-white/90" : "text-gray-600"
+                  }`}
+                >
+                  {t.quote}
+                </p>
+
+                <div className="flex items-center gap-3 mt-8">
+                  <div
+                    className="w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-semibold flex-shrink-0"
+                    style={{ backgroundColor: isHovered ? "#3d9e96" : t.color }}
+                  >
+                    {t.initials}
+                  </div>
+                  <div>
+                    <div className={`font-semibold text-sm ${isHovered ? "text-white" : "text-gray-900"}`}>
+                      {t.name}
+                    </div>
+                    <div className={`text-xs mt-0.5 ${isHovered ? "text-white/60" : "text-gray-400"}`}>
+                      {t.role}
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Dot indicators */}
-        <div className="flex gap-2 justify-center mt-8">
-          {testimonials.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setActive(i)}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                i === active ? "w-6 bg-[#1a4a47]" : "w-1.5 bg-gray-300"
-              }`}
-              aria-label={`Go to testimonial ${i + 1}`}
-            />
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

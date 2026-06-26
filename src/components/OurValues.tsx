@@ -1,25 +1,22 @@
 import { useRef, useEffect } from "react";
+import { ArrowRight } from "lucide-react";
 
 const values = [
   {
-    symbol: "◉",
     name: "Community",
-    desc: "We believe healing happens in togetherness. Isinmi is a space where survivors find belonging, solidarity, and the understanding that no one walks this road alone.",
+    desc: "At Ìsinmi, we foster a supportive community of like-minded individuals dedicated to our cause. We aim to create an environment where survivors feel welcomed, supported, and at peace, like they've found a home among us.",
   },
   {
-    symbol: "◈",
     name: "Inclusion",
-    desc: "Every survivor deserves to be seen and supported, regardless of gender, background, or circumstance. We open our arms wide, without judgment or condition.",
+    desc: "We are committed to inclusivity at Ìsinmi. There are no barriers or biases here; everyone is welcomed with open arms. Every issue related to sexual assault is significant to us, and we treat each one with the same level of importance and care.",
   },
   {
-    symbol: "◎",
     name: "Empathy",
-    desc: "We lead with compassion. We understand the depth of trauma caused by sexual abuse and approach every interaction with sensitivity, patience, and care.",
+    desc: "Empathy lies at the heart of our mission. We understand and share the feelings of those impacted by sexual abuse. It drives our actions and dedication to providing compassionate support to survivors, ensuring they feel heard, understood, and supported.",
   },
   {
-    symbol: "◇",
     name: "Sense of Responsibility",
-    desc: "Sexual abuse is everyone's problem to solve. We take ownership of building a safer society and hold ourselves accountable to the survivors who place their trust in us.",
+    desc: "At Ìsinmi, creating a safe space for survivors is a collective effort. We believe everyone has a role to play, and we all bear the responsibility to contribute to this mission. It's about understanding that we each have a part to play in fostering a safer, more supportive environment for survivors.",
   },
 ];
 
@@ -34,58 +31,64 @@ export default function OurValues() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            const el = entry.target as HTMLElement;
-            const delay = parseInt(el.dataset.delay || "0");
+            const node = entry.target as HTMLElement;
+            const delay = parseInt(node.dataset.delay || "0");
             setTimeout(() => {
-              el.style.opacity = "1";
-              el.style.transform = "translateY(0)";
+              node.style.opacity = "1";
+              node.style.transform = "translateY(0)";
             }, delay);
-            obs.unobserve(el);
+            obs.unobserve(node);
           }
         });
       },
       { threshold: 0.1 }
     );
     items.forEach((item) => {
-      const el = item as HTMLElement;
-      el.style.opacity = "0";
-      el.style.transform = "translateY(28px)";
-      el.style.transition = "opacity 1.6s cubic-bezier(0.22,1,0.36,1), transform 1.6s cubic-bezier(0.22,1,0.36,1)";
-      obs.observe(el);
+      const node = item as HTMLElement;
+      node.style.opacity = "0";
+      node.style.transform = "translateY(28px)";
+      node.style.transition =
+        "opacity 1.4s cubic-bezier(0.22,1,0.36,1), transform 1.4s cubic-bezier(0.22,1,0.36,1)";
+      obs.observe(node);
     });
     return () => obs.disconnect();
   }, []);
 
   return (
-    <section id="values" className="bg-[#1a4a47] py-24 sm:py-32 px-6 sm:px-12 lg:px-20">
-      <div className="max-w-6xl mx-auto" ref={containerRef}>
+    <section id="values" className="bg-[#0e3431] py-28 sm:py-36 lg:py-44 px-6 sm:px-12 lg:px-20">
+      <div className="max-w-7xl mx-auto" ref={containerRef}>
         {/* Header */}
-        <div className="mb-16 value-item" data-delay="0">
-          <span className="text-[#3d9e96] text-xs tracking-[0.3em] font-medium uppercase">
-            / Our Values
+        <div className="value-item" data-delay="0">
+          <span className="text-sm font-semibold tracking-[0.2em] uppercase">
+            <span className="text-[#2ee8d5]">/</span>{" "}
+            <span className="text-[#2ee8d5]">Our Values</span>
           </span>
-          <p className="mt-6 text-white/70 text-base sm:text-lg leading-relaxed font-light max-w-xl">
-            The essence of{" "}
-            <em className="text-white not-italic font-medium">Isinmi</em> revolves around these
+          <h2 className="mt-8 font-display text-white leading-[1.1] max-w-3xl text-[clamp(2rem,4.6vw,3.5rem)]">
+            The essence of <span className="text-[#2ee8d5]">Ìsinmi</span> revolves around these
             cherished values that form the very core of our mission.
-          </p>
+          </h2>
         </div>
 
-        {/* Values grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-white/10 rounded-2xl overflow-hidden">
+        {/* Values list (offset to the right on desktop) */}
+        <div className="mt-20 lg:mt-28 lg:pl-[33%]">
           {values.map((val, i) => (
             <div
               key={val.name}
-              className="value-item bg-[#1a4a47] p-8 sm:p-10 hover:bg-[#1f5c58] transition-colors duration-300 group"
-              data-delay={`${i * 100}`}
+              className="value-item grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] gap-5 lg:gap-12 py-8 border-t border-white/15"
+              data-delay={`${i * 90}`}
             >
-              <div className="text-[#3d9e96] text-2xl mb-5 group-hover:scale-110 transition-transform duration-300 inline-block">
-                {val.symbol}
+              <div className="flex items-center gap-4">
+                <span className="flex-shrink-0 w-9 h-9 rounded-full border border-white/35 flex items-center justify-center text-white/70">
+                  <ArrowRight size={16} strokeWidth={1.75} />
+                </span>
+                <h3 className="text-white text-lg sm:text-xl font-medium">{val.name}</h3>
               </div>
-              <h3 className="text-white font-semibold text-lg mb-3">{val.name}</h3>
-              <p className="text-white/60 text-sm leading-relaxed font-light">{val.desc}</p>
+              <p className="text-white/65 text-sm sm:text-base leading-relaxed font-light">
+                {val.desc}
+              </p>
             </div>
           ))}
+          <div className="border-t border-white/15" />
         </div>
       </div>
     </section>
