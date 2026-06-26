@@ -84,7 +84,7 @@ export default function Nav() {
                 key={link}
                 href={hrefs[i]}
                 onClick={() => setOpen(false)}
-                className="px-3 py-2 rounded-full whitespace-nowrap text-xs sm:text-sm transition-colors duration-200 hover:bg-[#1a4a47]/10 hover:text-[#1a4a47]"
+                className="nav-link px-3 py-2 whitespace-nowrap text-xs sm:text-sm transition-colors duration-200 hover:text-[#1a4a47]"
               >
                 {link}
               </a>
