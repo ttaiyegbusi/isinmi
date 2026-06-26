@@ -22,9 +22,10 @@ const countries: Country[] = [
   { name: "Burundi", query: "Bujumbura,Burundi", blurb: "Establishing our first survivor outreach in Bujumbura." },
 ];
 
-// Keyword-based free image service (relates the photo to the country).
-// Swap for self-hosted images later by changing this one function.
-const imgUrl = (q: string) => `https://loremflickr.com/420/300/${q}`;
+// Keyword-based free image service. `lock` (index+1) pins each country to a
+// single, stable image so it never changes between loads.
+const imgUrl = (q: string, lock: number) =>
+  `https://loremflickr.com/420/300/${q}?lock=${lock}`;
 
 export default function OurReach() {
   const headerRef = useReveal<HTMLDivElement>();
@@ -37,6 +38,14 @@ export default function OurReach() {
     update();
     mq.addEventListener("change", update);
     return () => mq.removeEventListener("change", update);
+  }, []);
+
+  // Preload every country image up front so they appear instantly on hover/tap.
+  useEffect(() => {
+    countries.forEach((c, i) => {
+      const img = new Image();
+      img.src = imgUrl(c.query, i + 1);
+    });
   }, []);
 
   return (
@@ -125,10 +134,10 @@ export default function OurReach() {
                         style={{ width: 230, height: 215, zIndex: 25 }}
                       >
                         <img
-                          src={imgUrl(c.query)}
+                          src={imgUrl(c.query, i + 1)}
                           alt={c.name}
                           className="w-full h-full object-cover"
-                          loading="lazy"
+                          loading="eager"
                         />
                       </div>
 
@@ -156,10 +165,10 @@ export default function OurReach() {
                       <div className="rounded-xl overflow-hidden mb-4 aspect-[16/10]">
                         {isActive && (
                           <img
-                            src={imgUrl(c.query)}
+                            src={imgUrl(c.query, i + 1)}
                             alt={c.name}
                             className="w-full h-full object-cover"
-                            loading="lazy"
+                            loading="eager"
                           />
                         )}
                       </div>
