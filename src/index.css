@@ -240,14 +240,14 @@ body.custom-cursor-active * {
   content: "";
   position: absolute;
   inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='40' viewBox='0 0 120 40'%3E%3Cpath d='M0 20 Q 15 4 30 20 T 60 20 T 90 20 T 120 20' fill='none' stroke='%232ee8d5' stroke-width='1.6' stroke-opacity='0.32'/%3E%3Cpath d='M0 32 Q 15 16 30 32 T 60 32 T 90 32 T 120 32' fill='none' stroke='%232ee8d5' stroke-width='1.6' stroke-opacity='0.2'/%3E%3C/svg%3E");
-  background-size: 120px 40px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='70' viewBox='0 0 160 70'%3E%3Cpath d='M0 35 Q 20 24 40 35 T 80 35 T 120 35 T 160 35' fill='none' stroke='%232ee8d5' stroke-width='1' stroke-opacity='0.08'/%3E%3C/svg%3E");
+  background-size: 160px 70px;
   background-repeat: repeat;
-  animation: waveDrift 14s linear infinite;
+  animation: waveDrift 20s linear infinite;
   pointer-events: none;
   z-index: 0;
-  -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.65));
-  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.65));
+  -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.2));
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.2));
 }
 
 @keyframes waveDrift {
@@ -255,7 +255,7 @@ body.custom-cursor-active * {
     background-position: 0 0;
   }
   to {
-    background-position: 120px 0;
+    background-position: 160px 0;
   }
 }
 
