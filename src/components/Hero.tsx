@@ -147,7 +147,7 @@ export default function Hero() {
             <motion.div
               ref={slotRef}
               className="self-center flex-shrink-0 mx-[0.08em]"
-              style={{ height: "1em" }}
+              style={{ height: "0.85em" }}
               initial={{ width: 0 }}
               animate={{ width: phase === "letters" ? 0 : slotTarget }}
               transition={{ duration: 0.6, ease: EASE }}
