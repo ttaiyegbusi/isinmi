@@ -36,8 +36,8 @@ export default function Footer() {
   };
 
   return (
-    <footer id="join" className="bg-[#0e3431] text-white overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-20 pt-24 sm:pt-28">
+    <footer id="join" className="footer-waves text-white overflow-hidden relative">
+      <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-20 pt-24 sm:pt-28 relative z-10">
         {/* CTA + email */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
           <div>
@@ -122,7 +122,7 @@ export default function Footer() {
             <ul className="space-y-3.5">
               {navLinks.map((l) => (
                 <li key={l.label}>
-                  <a href={l.href} className="text-white text-base hover:text-[#2ee8d5] transition-colors">
+                  <a href={l.href} className="footer-link text-white text-base hover:text-[#2ee8d5] transition-colors">
                     {l.label}
                   </a>
                 </li>
@@ -135,12 +135,12 @@ export default function Footer() {
             <div className="text-white/45 text-sm mb-5">Legal</div>
             <ul className="space-y-3.5">
               <li>
-                <a href="#" className="text-white text-base hover:text-[#2ee8d5] transition-colors">
+                <a href="#" className="footer-link text-white text-base hover:text-[#2ee8d5] transition-colors">
                   Privacy Policy
                 </a>
               </li>
               <li>
-                <a href="#" className="text-white text-base hover:text-[#2ee8d5] transition-colors">
+                <a href="#" className="footer-link text-white text-base hover:text-[#2ee8d5] transition-colors">
                   Terms of Use
                 </a>
               </li>
@@ -169,7 +169,7 @@ export default function Footer() {
 
       {/* Giant wordmark - fills the full width, all letters visible, bleeding
           off the bottom edge */}
-      <div className="overflow-hidden text-center mt-8">
+      <div className="overflow-hidden text-center mt-8 relative z-10">
         <span
           className="font-display font-black inline-block text-white leading-none select-none pointer-events-none align-bottom"
           style={{

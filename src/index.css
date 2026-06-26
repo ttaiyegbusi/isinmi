@@ -229,3 +229,85 @@ body.custom-cursor-active * {
   opacity: 0;
   transition: opacity 0.3s ease;
 }
+
+/* Footer wave pattern background */
+.footer-waves {
+  position: relative;
+  background: linear-gradient(180deg, #0e3431 0%, #0a2423 100%);
+}
+
+.footer-waves::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  background:
+    radial-gradient(ellipse 800px 60px at 50% -30px, rgba(46, 232, 213, 0.08), transparent),
+    radial-gradient(ellipse 900px 70px at 20% 100px, rgba(46, 232, 213, 0.05), transparent),
+    radial-gradient(ellipse 700px 50px at 80% 80px, rgba(46, 232, 213, 0.06), transparent);
+  animation: waveFlow 8s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes waveFlow {
+  0%, 100% {
+    background:
+      radial-gradient(ellipse 800px 60px at 50% -30px, rgba(46, 232, 213, 0.08), transparent),
+      radial-gradient(ellipse 900px 70px at 20% 100px, rgba(46, 232, 213, 0.05), transparent),
+      radial-gradient(ellipse 700px 50px at 80% 80px, rgba(46, 232, 213, 0.06), transparent);
+  }
+  50% {
+    background:
+      radial-gradient(ellipse 800px 60px at 45% -25px, rgba(46, 232, 213, 0.1), transparent),
+      radial-gradient(ellipse 900px 70px at 25% 105px, rgba(46, 232, 213, 0.07), transparent),
+      radial-gradient(ellipse 700px 50px at 75% 75px, rgba(46, 232, 213, 0.08), transparent);
+  }
+}
+
+/* Wavy underline for footer links */
+.footer-link {
+  position: relative;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-link::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 6'%3E%3Cpath d='M0,3 Q5,0 10,3 T20,3 T30,3 T40,3 T50,3 T60,3 T70,3 T80,3 T90,3 T100,3' stroke='%232ee8d5' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") repeat-x;
+  background-size: 20px 6px;
+  background-position: 0 0;
+  animation: waveUnderline 0.4s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+  transform-origin: left;
+}
+
+@keyframes waveUnderline {
+  from {
+    width: 0;
+    opacity: 0;
+  }
+  to {
+    width: 100%;
+    opacity: 1;
+  }
+}
+
+.footer-link:hover::after {
+  animation: waveUnderlineFlow 0.6s linear infinite;
+}
+
+@keyframes waveUnderlineFlow {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 20px 0;
+  }
+}
