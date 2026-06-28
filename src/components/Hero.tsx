@@ -29,7 +29,6 @@ export default function Hero() {
   const [phase, setPhase] = useState<"letters" | "slot" | "expand" | "done">("letters");
   const [slotTarget, setSlotTarget] = useState(300);
   const slotRef = useRef<HTMLDivElement>(null);
-  const wordmarkRef = useRef<HTMLSpanElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const [clip, setClip] = useState<Inset>(() => ({
     top: typeof window !== "undefined" ? window.innerHeight / 2 : 400,
@@ -167,7 +166,7 @@ export default function Hero() {
         <RippleVideo
           src="/videos/hero-ocean.mp4"
           poster="https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=1800&q=85&fit=crop"
-          textRefs={[wordmarkRef, headlineRef]}
+          textRefs={[headlineRef]}
           textVisible={phase === "done"}
         />
       </div>
@@ -176,13 +175,11 @@ export default function Hero() {
           draws them so the ripple distorts them); the arrow stays as crisp HTML. */}
       <div className="relative z-30 h-full pointer-events-none">
         <div className="absolute top-6 left-6 sm:top-8 sm:left-10">
-          <span
-            ref={wordmarkRef}
-            className="font-display font-black text-white text-2xl sm:text-3xl select-none"
-            style={{ letterSpacing: "-0.01em", opacity: 0 }}
-          >
-            ÌSINMI
-          </span>
+          <img
+            src="/logo-white.png"
+            alt="Ìsinmi Foundation"
+            className="h-16 sm:h-20 w-auto select-none"
+          />
         </div>
 
         <div className="absolute inset-0 flex items-center justify-center px-6">

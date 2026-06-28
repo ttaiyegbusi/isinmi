@@ -108,7 +108,11 @@ export default function Footer() {
         <div className="mt-24 sm:mt-28 grid grid-cols-1 lg:grid-cols-[1.1fr_2fr] gap-12 lg:gap-20">
           {/* Brand */}
           <div>
-            <div className="font-display font-black text-3xl tracking-tight">ÌSINMI</div>
+            <img
+              src="/logo-white.png"
+              alt="Ìsinmi Foundation"
+              className="h-24 w-auto"
+            />
             <p className="mt-4 text-white/50 text-sm leading-relaxed max-w-[220px]">
               Providing rest for survivors of sexual abuse in Nigeria.
             </p>
