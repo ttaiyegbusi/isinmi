@@ -179,6 +179,10 @@ export default function Hero() {
             src="/logo-white.png"
             alt="Ìsinmi Foundation"
             className="h-16 sm:h-20 w-auto select-none"
+            style={{
+              opacity: phase === "done" ? 1 : 0,
+              transition: "opacity 1s cubic-bezier(0.19,1,0.22,1)",
+            }}
           />
         </div>
 
