@@ -196,12 +196,14 @@ export default function OurReach() {
                         </div>
                       </div>
 
-                      <p
+                      <div
                         key={`txt-${c.name}`}
-                        className="reach-fade absolute right-0 top-1/2 -translate-y-1/2 hidden lg:block text-white/80 text-sm leading-relaxed max-w-xs"
+                        className="absolute right-0 top-1/2 -translate-y-1/2 hidden lg:block max-w-xs"
                       >
-                        {c.blurb}
-                      </p>
+                        <p className="reach-fade text-white/80 text-sm leading-relaxed">
+                          {c.blurb}
+                        </p>
+                      </div>
                     </>
                   )}
                 </div>
