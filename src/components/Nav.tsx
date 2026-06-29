@@ -105,13 +105,13 @@ export default function Nav() {
         transition={{ duration: 0.25, ease: [0.32, 0.72, 0, 1] }}
         className="absolute right-0 top-full pt-[10px] origin-top-right"
       >
-        <div className="flex flex-col bg-white rounded-2xl shadow-xl shadow-black/15 p-2 min-w-[210px]">
+        <div className="flex flex-col items-start bg-white rounded-2xl shadow-xl shadow-black/15 p-2 min-w-[210px]">
           {links.map((link, i) => (
             <a
               key={link}
               href={hrefs[i]}
               onClick={() => setOpen(false)}
-              className="px-4 py-2.5 rounded-xl text-sm font-medium text-[#1a4a47] hover:bg-[#1a4a47]/10 transition-colors duration-200"
+              className="nav-link self-start px-4 py-2.5 text-sm font-medium text-[#1a4a47] transition-colors duration-200"
             >
               {link}
             </a>
