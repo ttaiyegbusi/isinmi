@@ -1,9 +1,40 @@
 import { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { motion } from "framer-motion";
-import { Menu } from "lucide-react";
 
 const links = ["Home", "About Us", "The Data", "Our Reach", "Values", "Testimonials"];
 const hrefs = ["#home", "#about", "#data", "#reach", "#values", "#testimonials"];
+
+// Three-bar icon that morphs into an X when `open` is true.
+function MenuToggleIcon({ open }: { open: boolean }) {
+  const bar =
+    "absolute left-0 right-0 h-[2px] rounded-full bg-current transition-all duration-300 ease-[cubic-bezier(0.19,1,0.22,1)]";
+  return (
+    <span className="relative block w-[18px] h-[14px]" aria-hidden="true">
+      <span
+        className={bar}
+        style={{
+          top: open ? "6px" : "0px",
+          transform: open ? "rotate(45deg)" : "rotate(0deg)",
+        }}
+      />
+      <span
+        className={bar}
+        style={{
+          top: "6px",
+          opacity: open ? 0 : 1,
+          transform: open ? "translateX(6px)" : "translateX(0)",
+        }}
+      />
+      <span
+        className={bar}
+        style={{
+          top: open ? "6px" : "12px",
+          transform: open ? "rotate(-45deg)" : "rotate(0deg)",
+        }}
+      />
+    </span>
+  );
+}
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
@@ -100,7 +131,7 @@ export default function Nav() {
           className="flex-shrink-0 h-9 pl-3 pr-2 rounded-full flex items-center gap-2 text-xs font-semibold tracking-[0.15em] uppercase"
         >
           Menu
-          <Menu size={16} strokeWidth={2} />
+          <MenuToggleIcon open={open} />
         </button>
       </div>
 
