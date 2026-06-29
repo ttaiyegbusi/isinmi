@@ -180,20 +180,25 @@ export default function OurReach() {
                     <>
                       <div
                         key={`img-${c.name}`}
-                        className="reach-pop absolute left-1/2 top-1/2 hidden md:block rounded-lg overflow-hidden shadow-2xl shadow-black/40"
-                        style={{ width: 230, height: 215, zIndex: 25 }}
+                        className="absolute right-[24rem] top-1/2 -translate-y-1/2 hidden md:block"
+                        style={{ zIndex: 25 }}
                       >
-                        <img
-                          src={c.image}
-                          alt={c.name}
-                          className="w-full h-full object-cover"
-                          loading="eager"
-                        />
+                        <div
+                          className="reach-pop2 rounded-lg overflow-hidden shadow-2xl shadow-black/40"
+                          style={{ width: 200, height: 188 }}
+                        >
+                          <img
+                            src={c.image}
+                            alt={c.name}
+                            className="w-full h-full object-cover"
+                            loading="eager"
+                          />
+                        </div>
                       </div>
 
                       <p
                         key={`txt-${c.name}`}
-                        className="reach-fade absolute right-0 top-1/2 -translate-y-1/2 hidden lg:block text-white/80 text-sm leading-relaxed max-w-sm"
+                        className="reach-fade absolute right-0 top-1/2 -translate-y-1/2 hidden lg:block text-white/80 text-sm leading-relaxed max-w-xs"
                       >
                         {c.blurb}
                       </p>

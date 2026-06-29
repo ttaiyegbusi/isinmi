@@ -204,6 +204,23 @@ body.custom-cursor-active * {
   }
 }
 
+/* Pop-in for the Our Reach image when positioning is handled by a parent
+   (so the animation owns only opacity/scale, no -50% centering). */
+.reach-pop2 {
+  animation: reachPop2 0.5s cubic-bezier(0.19, 1, 0.22, 1) both;
+}
+
+@keyframes reachPop2 {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 .reach-fade {
   animation: reachFade 0.55s cubic-bezier(0.19, 1, 0.22, 1) both;
   animation-delay: 0.08s;
