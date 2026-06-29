@@ -5,27 +5,77 @@ const EASE = "cubic-bezier(0.19,1,0.22,1)";
 
 type Country = {
   name: string;
-  query: string; // Unsplash keyword(s)
+  image: string; // fixed Unsplash photo id (stable, never changes)
   blurb: string;
 };
 
-const countries: Country[] = [
-  { name: "Nigeria", query: "Lagos,Nigeria", blurb: "Where Ìsinmi began — building survivor hubs across Lagos and beyond." },
-  { name: "Uganda", query: "Kampala,Uganda", blurb: "Partnering with local advocates to open safe spaces in Kampala." },
-  { name: "Rwanda", query: "Kigali,Rwanda", blurb: "Community-led healing circles taking root in Kigali." },
-  { name: "Kenya", query: "Nairobi,Kenya", blurb: "Connecting survivors to mental health and legal support in Nairobi." },
-  { name: "Ethiopia", query: "Addis-Ababa,Ethiopia", blurb: "Growing peer-support networks across Addis Ababa." },
-  { name: "Malawi", query: "Malawi,Africa", blurb: "Education-first programs reaching rural communities." },
-  { name: "Democratic Republic of Congo", query: "Kinshasa,Congo", blurb: "Reaching survivors in conflict-affected regions with care and refuge." },
-  { name: "South Africa", query: "Cape-Town,South-Africa", blurb: "Scaling advocacy and accommodation support in Cape Town and Johannesburg." },
-  { name: "Ghana", query: "Accra,Ghana", blurb: "Building awareness and mentorship pathways in Accra." },
-  { name: "Burundi", query: "Bujumbura,Burundi", blurb: "Establishing our first survivor outreach in Bujumbura." },
-];
+// One curated, recognisable image per country (city / landmark / culture).
+// Fixed Unsplash photo ids — a given id always returns the exact same image.
+const photo = (id: string) =>
+  `https://images.unsplash.com/photo-${id}?w=600&h=560&q=80&auto=format&fit=crop`;
 
-// Keyword-based free image service. `lock` (index+1) pins each country to a
-// single, stable image so it never changes between loads.
-const imgUrl = (q: string, lock: number) =>
-  `https://loremflickr.com/420/300/${q}?lock=${lock}`;
+const countries: Country[] = [
+  {
+    name: "Nigeria",
+    image: photo("1618828665011-0abd973f7bb8"),
+    blurb:
+      "Where Ìsinmi began. From Lagos to Abuja, we're building survivor hubs, training counsellors, and partnering with hospitals so that no one has to walk the road to healing alone.",
+  },
+  {
+    name: "Uganda",
+    image: photo("1557849582-5875ac6dee83"),
+    blurb:
+      "In Kampala and the districts around it, we work hand-in-hand with local advocates to open safe houses and fund trauma-informed care for survivors rebuilding their lives.",
+  },
+  {
+    name: "Rwanda",
+    image: photo("1687986261123-b17f08f2796c"),
+    blurb:
+      "Across Kigali, community-led healing circles are taking root — a model of reconciliation and resilience that helps survivors find strength in one another.",
+  },
+  {
+    name: "Kenya",
+    image: photo("1611348524140-53c9a25263d6"),
+    blurb:
+      "From Nairobi outward, we connect survivors to mental-health services, legal aid, and safe shelter, making sure justice and recovery move forward together.",
+  },
+  {
+    name: "Ethiopia",
+    image: photo("1572888195250-3037a59d3578"),
+    blurb:
+      "In Addis Ababa and the highlands beyond, we're growing peer-support networks rooted in faith, community, and the quiet dignity of rest.",
+  },
+  {
+    name: "Malawi",
+    image: photo("1612286710224-dd9eb9d8349a"),
+    blurb:
+      "Along the shores of Lake Malawi, our education-first programs reach rural communities, breaking the silence around abuse and equipping young people to protect one another.",
+  },
+  {
+    name: "Democratic Republic of Congo",
+    image: photo("1623930180584-1b14bc584169"),
+    blurb:
+      "In Kinshasa and conflict-affected regions, we reach survivors with refuge, medical care, and the steady reassurance that their lives still hold worth.",
+  },
+  {
+    name: "South Africa",
+    image: photo("1580060839134-75a5edca2e99"),
+    blurb:
+      "From Cape Town to Johannesburg, we scale advocacy, safe accommodation, and survivor employment programs across one of the continent's busiest corridors.",
+  },
+  {
+    name: "Ghana",
+    image: photo("1630386226447-af0a955c1009"),
+    blurb:
+      "In Accra and along the Cape Coast, we build awareness, mentorship, and survivor-led storytelling that turns stigma into solidarity.",
+  },
+  {
+    name: "Burundi",
+    image: photo("1672787076496-ccb18a869605"),
+    blurb:
+      "In Bujumbura, we're establishing our first outreach — listening, learning, and laying the foundations of a community where survivors can finally rest.",
+  },
+];
 
 export default function OurReach() {
   const headerRef = useReveal<HTMLDivElement>();
@@ -42,9 +92,9 @@ export default function OurReach() {
 
   // Preload every country image up front so they appear instantly on hover/tap.
   useEffect(() => {
-    countries.forEach((c, i) => {
+    countries.forEach((c) => {
       const img = new Image();
-      img.src = imgUrl(c.query, i + 1);
+      img.src = c.image;
     });
   }, []);
 
@@ -134,7 +184,7 @@ export default function OurReach() {
                         style={{ width: 230, height: 215, zIndex: 25 }}
                       >
                         <img
-                          src={imgUrl(c.query, i + 1)}
+                          src={c.image}
                           alt={c.name}
                           className="w-full h-full object-cover"
                           loading="eager"
@@ -143,7 +193,7 @@ export default function OurReach() {
 
                       <p
                         key={`txt-${c.name}`}
-                        className="reach-fade absolute right-0 hidden lg:block text-white/80 text-sm leading-relaxed max-w-xs"
+                        className="reach-fade absolute right-0 top-1/2 -translate-y-1/2 hidden lg:block text-white/80 text-sm leading-relaxed max-w-sm"
                       >
                         {c.blurb}
                       </p>
@@ -156,7 +206,7 @@ export default function OurReach() {
                   <div
                     className="overflow-hidden"
                     style={{
-                      maxHeight: isActive ? 360 : 0,
+                      maxHeight: isActive ? 480 : 0,
                       opacity: isActive ? 1 : 0,
                       transition: `max-height 0.5s ${EASE}, opacity 0.4s ${EASE}`,
                     }}
@@ -165,7 +215,7 @@ export default function OurReach() {
                       <div className="rounded-xl overflow-hidden mb-4 aspect-[16/10]">
                         {isActive && (
                           <img
-                            src={imgUrl(c.query, i + 1)}
+                            src={c.image}
                             alt={c.name}
                             className="w-full h-full object-cover"
                             loading="eager"
