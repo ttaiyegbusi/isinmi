@@ -85,11 +85,28 @@ export default function CustomCursor() {
 
     let raf = 0;
     const animate = () => {
-      ringX += (x - ringX) * 0.18;
-      ringY += (y - ringY) * 0.18;
+      const el = document.elementFromPoint(x, y);
+
+      // Magnetic snap: while over a [data-magnetic] element, the ring (and dot)
+      // target that element's center instead of the raw cursor position.
+      const magnet = el?.closest("[data-magnetic]") as HTMLElement | null;
+      let tx = x;
+      let ty = y;
+      if (magnet) {
+        const r = magnet.getBoundingClientRect();
+        tx = r.left + r.width / 2;
+        ty = r.top + r.height / 2;
+      }
+      ring.classList.toggle("is-magnetic", !!magnet);
+
+      ringX += (tx - ringX) * 0.18;
+      ringY += (ty - ringY) * 0.18;
       ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%)`;
 
-      const el = document.elementFromPoint(x, y);
+      // the dot snaps to the magnet center too, so the cursor stays unified
+      if (magnet) {
+        dot.style.transform = `translate3d(${tx}px, ${ty}px, 0) translate(-50%, -50%)`;
+      }
 
       // adaptive color: green on light backgrounds, white on dark
       const light = bgLuminance(el) > 0.55;

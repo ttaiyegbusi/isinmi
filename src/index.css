@@ -180,6 +180,13 @@ body.custom-cursor-active * {
   height: 46px;
 }
 
+/* Magnetic snap: ring grows to wrap the hovered target (e.g. scroll arrow) */
+.cursor-ring.is-magnetic {
+  width: 56px;
+  height: 56px;
+  border-color: rgba(255, 255, 255, 0.9);
+}
+
 /* Our Reach hover panel */
 .reach-pop {
   transform: translate(-50%, -50%) scale(1);

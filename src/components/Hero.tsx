@@ -203,6 +203,7 @@ export default function Hero() {
         <a
           href="#about"
           aria-label="Scroll down"
+          data-magnetic
           className="pointer-events-auto absolute bottom-8 left-1/2 -translate-x-1/2 w-11 h-11 rounded-full border border-white/50 flex items-center justify-center text-white/80 hover:text-white hover:border-white transition-colors"
           style={{
             opacity: phase === "done" ? 1 : 0,
