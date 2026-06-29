@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Renderer, Triangle, Program, Mesh, Texture } from "ogl";
 
-const MAX_RIPPLES = 12;
+const MAX_RIPPLES = 18;
 
 const vertex = `
   attribute vec2 uv;
@@ -45,7 +45,7 @@ const fragment = `
       vec3 r = uRipples[i];
       if (r.z <= 0.0) continue;
       float age = uTime - r.z;
-      if (age < 0.0 || age > 1.6) continue;
+      if (age < 0.0 || age > 1.9) continue;
 
       vec2 diff = pixel - r.xy;
       float dist = max(length(diff), 0.5);
@@ -54,7 +54,7 @@ const fragment = `
       float speed = 340.0;
       float ringRadius = age * speed;
       float band = exp(-pow((dist - ringRadius) / 45.0, 2.0));
-      float decay = exp(-age * 2.0);
+      float decay = exp(-age * 1.7);
       float amp = 16.0 * band * decay;
 
       displacement += dir * amp;
@@ -226,7 +226,7 @@ export default function RippleVideo({ src, poster, textRefs, textVisible }: Prop
 
     const pushRipple = (x: number, y: number) => {
       const now = performance.now() / 1000;
-      if (now - lastPush > 0.035) {
+      if (now - lastPush > 0.02) {
         ripples[rippleIndex * 3 + 0] = x;
         ripples[rippleIndex * 3 + 1] = y;
         ripples[rippleIndex * 3 + 2] = now;
@@ -242,7 +242,7 @@ export default function RippleVideo({ src, poster, textRefs, textVisible }: Prop
 
       const dx = x - lastX;
       const dy = y - lastY;
-      const moved = lastX < 0 || Math.hypot(dx, dy) > 6;
+      const moved = lastX < 0 || Math.hypot(dx, dy) > 2;
 
       if (moved) {
         pushRipple(x, y);
