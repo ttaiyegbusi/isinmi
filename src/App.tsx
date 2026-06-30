@@ -5,9 +5,11 @@ import CustomCursor from "./components/CustomCursor";
 import AboutUs from "./components/AboutUs";
 import TheData from "./components/TheData";
 import MissionStatement from "./components/MissionStatement";
+import OurPrograms from "./components/OurPrograms";
 import OurReach from "./components/OurReach";
 import OurValues from "./components/OurValues";
 import Testimonials from "./components/Testimonials";
+import Faq from "./components/Faq";
 import Footer from "./components/Footer";
 
 function App() {
@@ -43,9 +45,11 @@ function App() {
       <AboutUs />
       <TheData />
       <MissionStatement />
+      <OurPrograms />
       <OurReach />
       <OurValues />
       <Testimonials />
+      <Faq />
       <Footer />
     </main>
   );

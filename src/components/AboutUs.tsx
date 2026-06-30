@@ -2,10 +2,10 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
 
 const paragraph1 =
-  "A Yoruba word meaning REST. Ìsinmi aims to provide rest for survivors of sexual abuse in Nigeria by building a community that promotes peace and sanity for survivors by leveraging education as a powerful tool to enlighten and eradicate sexual abuse within the country and Africa at large.";
+  "Ìsinmi, a Yoruba word meaning “rest,” is dedicated to protecting children from sexual abuse through education, advocacy, and community action while providing safe spaces where survivors can heal.";
 
 const paragraph2 =
-  "Our long-term mission is to help eradicate sexual abuse in Nigeria and across Africa through education, advocacy, and community support. We believe every survivor deserves a safe space to heal, to be heard, and to rebuild.";
+  "We believe every child deserves to grow up safe, and every survivor deserves to be heard, supported, and empowered. Our mission is to build communities across Nigeria and Africa that prevent sexual abuse, protect children, and promote healing for survivors.";
 
 const words1 = paragraph1.split(" ");
 const words2 = paragraph2.split(" ");
