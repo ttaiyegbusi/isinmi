@@ -105,7 +105,7 @@ export default function Footer() {
         </div>
 
         {/* Brand + link columns */}
-        <div className="mt-24 sm:mt-28 grid grid-cols-1 lg:grid-cols-[1.1fr_2fr] gap-12 lg:gap-20">
+        <div className="mt-24 sm:mt-28 grid grid-cols-1 lg:grid-cols-[240px_1fr] gap-12 lg:gap-16">
           {/* Brand */}
           <div>
             <img
@@ -119,7 +119,7 @@ export default function Footer() {
           </div>
 
           {/* Link columns */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-10">
+          <div className="grid grid-cols-2 gap-y-10 gap-x-8 lg:flex lg:justify-between lg:gap-x-10">
           {/* Navigation */}
           <div>
             <div className="text-white/45 text-sm mb-5">Navigation</div>
@@ -166,14 +166,16 @@ export default function Footer() {
                 </a>
               ))}
             </div>
+          </div>
 
-            {/* Contact Us */}
-            <div className="text-white/45 text-sm mt-10 mb-5">Contact Us</div>
+          {/* Contact Us */}
+          <div>
+            <div className="text-white/45 text-sm mb-5">Contact Us</div>
             <ul className="space-y-3.5 text-base">
               <li>
                 <a
                   href="mailto:isinmifoundation@gmail.com"
-                  className="text-white hover:text-[#2ee8d5] transition-colors break-all"
+                  className="text-white hover:text-[#2ee8d5] transition-colors whitespace-nowrap"
                 >
                   isinmifoundation@gmail.com
                 </a>
@@ -181,7 +183,7 @@ export default function Footer() {
               <li>
                 <a
                   href="tel:+250792525820"
-                  className="text-white hover:text-[#2ee8d5] transition-colors"
+                  className="text-white hover:text-[#2ee8d5] transition-colors whitespace-nowrap"
                 >
                   +250 792 525 820
                 </a>
