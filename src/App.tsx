@@ -5,6 +5,7 @@ import CustomCursor from "./components/CustomCursor";
 import AboutUs from "./components/AboutUs";
 import TheData from "./components/TheData";
 import MissionStatement from "./components/MissionStatement";
+import SdgMarquee from "./components/SdgMarquee";
 import OurPrograms from "./components/OurPrograms";
 import OurReach from "./components/OurReach";
 import OurValues from "./components/OurValues";
@@ -45,6 +46,7 @@ function App() {
       <AboutUs />
       <TheData />
       <MissionStatement />
+      <SdgMarquee />
       <OurPrograms />
       <OurReach />
       <OurValues />

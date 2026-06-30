@@ -72,22 +72,32 @@ export default function OurPrograms() {
         </div>
 
         {/* Programs grid */}
-        <div className="mt-20 lg:mt-28 grid grid-cols-1 md:grid-cols-2 gap-px bg-white/15 border border-white/15 rounded-2xl overflow-hidden">
+        <div className="mt-20 lg:mt-28 grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6">
           {programs.map((p, i) => (
             <div
               key={p.name}
-              className="program-item bg-[#0e3431] p-8 sm:p-10 lg:p-12"
+              className="program-item group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.025] p-8 sm:p-10 lg:p-12 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:border-[#2ee8d5]/40 hover:bg-white/[0.05]"
               data-delay={`${i * 90}`}
             >
-              <div className="flex items-center gap-4 mb-5">
-                <span className="flex-shrink-0 w-9 h-9 rounded-full border border-[#2ee8d5]/40 flex items-center justify-center text-[#2ee8d5] text-sm font-semibold">
-                  {i + 1}
+              {/* big faded index watermark */}
+              <span
+                className="pointer-events-none absolute -top-6 right-2 font-display font-black text-white/[0.05] leading-none select-none"
+                style={{ fontSize: "9rem" }}
+              >
+                {i + 1}
+              </span>
+
+              <div className="relative">
+                <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#2ee8d5]">
+                  Program {`0${i + 1}`}
                 </span>
-                <h3 className="text-white text-xl sm:text-2xl font-medium">{p.name}</h3>
+                <h3 className="mt-4 text-white text-xl sm:text-2xl lg:text-[1.7rem] font-medium leading-tight">
+                  {p.name}
+                </h3>
+                <p className="mt-5 text-white/60 text-sm sm:text-base leading-relaxed font-light max-w-md">
+                  {p.desc}
+                </p>
               </div>
-              <p className="text-white/65 text-sm sm:text-base leading-relaxed font-light">
-                {p.desc}
-              </p>
             </div>
           ))}
         </div>
