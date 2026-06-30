@@ -177,8 +177,8 @@ export default function Hero() {
         <div className="absolute inset-0 flex items-center justify-center px-6">
           <h1
             ref={headlineRef}
-            className="font-display font-black text-white text-center uppercase leading-[0.95] text-[clamp(2.5rem,8vw,6rem)]"
-            style={{ letterSpacing: "-0.01em", opacity: 0 }}
+            className="font-display font-black text-white text-center uppercase leading-[1.04] text-[clamp(2.5rem,8vw,6rem)]"
+            style={{ letterSpacing: "0.03em", opacity: 0 }}
           >
             Protecting Children
             <br />
