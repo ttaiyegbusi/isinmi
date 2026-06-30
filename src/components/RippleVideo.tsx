@@ -51,11 +51,16 @@ const fragment = `
       float dist = max(length(diff), 0.5);
       vec2 dir = diff / dist;
 
-      float speed = 340.0;
+      float speed = 320.0;
       float ringRadius = age * speed;
-      float band = exp(-pow((dist - ringRadius) / 45.0, 2.0));
-      float decay = exp(-age * 1.7);
-      float amp = 16.0 * band * decay;
+      float ring = dist - ringRadius;
+
+      // Oscillating wave (crest + trough) inside a decaying Gaussian
+      // envelope = a natural concentric ripple instead of a one-way bulge.
+      float envelope = exp(-pow(ring / 60.0, 2.0));
+      float wave = sin(ring * 0.085);
+      float decay = exp(-age * 1.6);
+      float amp = 13.0 * wave * envelope * decay;
 
       displacement += dir * amp;
     }
@@ -73,8 +78,10 @@ const fragment = `
     float bot = smoothstep(0.55, 1.0, vUv.y) * 0.40;
     col = mix(col, vec3(0.0), top + bot);
 
-    // wordmark + headline, displaced by the same ripple field, composited on top
-    vec4 textTex = texture2D(tText, vUv + disp);
+    // wordmark + headline composited on top. The text is displaced by a
+    // gentler share of the ripple field so the solid glyphs ripple softly
+    // instead of smearing/stretching.
+    vec4 textTex = texture2D(tText, vUv + disp * 0.45);
     col = mix(col, vec3(1.0), textTex.a * uTextAlpha);
 
     gl_FragColor = vec4(col, 1.0);
