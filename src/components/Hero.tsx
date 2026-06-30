@@ -174,18 +174,6 @@ export default function Hero() {
       {/* Hero content. The wordmark + headline are kept invisible here (the shader
           draws them so the ripple distorts them); the arrow stays as crisp HTML. */}
       <div className="relative z-30 h-full pointer-events-none">
-        <div className="absolute top-6 left-6 sm:top-8 sm:left-10">
-          <img
-            src="/logo-white.png"
-            alt="Ìsinmi Foundation"
-            className="h-16 sm:h-20 w-auto select-none"
-            style={{
-              opacity: phase === "done" ? 1 : 0,
-              transition: "opacity 1s cubic-bezier(0.19,1,0.22,1)",
-            }}
-          />
-        </div>
-
         <div className="absolute inset-0 flex items-center justify-center px-6">
           <h1
             ref={headlineRef}

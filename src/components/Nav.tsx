@@ -56,79 +56,99 @@ export default function Nav() {
     return () => document.removeEventListener("click", onOutsideClick);
   }, [open]);
 
-  const pillBg = scrolled
-    ? "bg-white shadow-lg shadow-black/10"
-    : "bg-white/95 backdrop-blur-md shadow-lg shadow-black/10";
+  // Over the dark hero the bar is transparent with white content; once scrolled
+  // onto the light sections it gets a white backdrop with dark content.
+  const linkColor = scrolled ? "text-[#1a4a47]" : "text-white";
+  const donateClass = scrolled
+    ? "bg-[#0e3431] text-white hover:bg-[#15403b]"
+    : "bg-white text-[#0e3431] hover:bg-white/90";
 
   return (
-    <>
-      {/* Centered links bar (desktop) */}
-      <nav className="fixed top-5 left-1/2 -translate-x-1/2 z-50 hidden lg:block">
-        <div className={`flex items-center gap-1 rounded-full px-3 py-2 text-[#1a4a47] ${pillBg}`}>
+    <header
+      className={`fixed top-0 inset-x-0 z-50 transition-colors duration-300 ${
+        scrolled ? "bg-white/95 backdrop-blur-md shadow-sm shadow-black/5" : "bg-transparent"
+      }`}
+    >
+      <div className="relative flex items-center justify-between px-5 sm:px-8 lg:px-12 py-4">
+        {/* Logo (left) */}
+        <a href="#home" aria-label="Ìsinmi Foundation" className="flex-shrink-0">
+          <img
+            src={scrolled ? "/logo.png" : "/logo-white.png"}
+            alt="Ìsinmi Foundation"
+            className="h-12 sm:h-14 w-auto select-none"
+          />
+        </a>
+
+        {/* Links (centered, plain text — desktop) */}
+        <nav className="hidden lg:flex absolute left-1/2 -translate-x-1/2 items-center gap-7">
           {links.map((link, i) => (
             <a
               key={link}
               href={hrefs[i]}
-              className="nav-link px-3 py-2 text-sm font-medium transition-colors duration-200 hover:text-[#0e3431]"
+              className={`nav-link text-sm font-medium transition-colors duration-200 ${linkColor}`}
             >
               {link}
             </a>
           ))}
-        </div>
-      </nav>
+        </nav>
 
-      {/* Top-right cluster: compact menu (below lg) + Donate (all sizes) */}
-      <div className="fixed top-5 right-5 z-50 flex items-center gap-2.5">
-        {/* Compact icon menu — links won't fit centered on small screens */}
-        <div
-          ref={menuRef}
-          className="relative lg:hidden"
-          onMouseEnter={canHover ? () => setOpen(true) : undefined}
-          onMouseLeave={canHover ? () => setOpen(false) : undefined}
-        >
-          <button
-            type="button"
-            aria-label="Toggle navigation"
-            aria-expanded={open}
-            onClick={() => setOpen((prev) => !prev)}
-            className={`flex items-center justify-center w-12 h-12 rounded-full text-[#1a4a47] ${pillBg}`}
+        {/* Right cluster: mobile menu + Donate */}
+        <div className="flex items-center gap-3 flex-shrink-0">
+          {/* Compact icon menu (below lg) */}
+          <div
+            ref={menuRef}
+            className="relative lg:hidden"
+            onMouseEnter={canHover ? () => setOpen(true) : undefined}
+            onMouseLeave={canHover ? () => setOpen(false) : undefined}
           >
-            <MenuToggleIcon open={open} />
-          </button>
+            <button
+              type="button"
+              aria-label="Toggle navigation"
+              aria-expanded={open}
+              onClick={() => setOpen((prev) => !prev)}
+              className={`flex items-center justify-center w-11 h-11 rounded-full border transition-colors duration-300 ${
+                scrolled
+                  ? "border-[#1a4a47]/25 text-[#1a4a47]"
+                  : "border-white/40 text-white"
+              }`}
+            >
+              <MenuToggleIcon open={open} />
+            </button>
 
-          <motion.div
-            initial={false}
-            animate={{
-              opacity: open ? 1 : 0,
-              y: open ? 0 : -8,
-              pointerEvents: open ? "auto" : "none",
-            }}
-            transition={{ duration: 0.25, ease: [0.32, 0.72, 0, 1] }}
-            className="absolute right-0 top-full pt-[10px] origin-top-right"
+            <motion.div
+              initial={false}
+              animate={{
+                opacity: open ? 1 : 0,
+                y: open ? 0 : -8,
+                pointerEvents: open ? "auto" : "none",
+              }}
+              transition={{ duration: 0.25, ease: [0.32, 0.72, 0, 1] }}
+              className="absolute right-0 top-full pt-[10px] origin-top-right"
+            >
+              <div className="flex flex-col items-start bg-white rounded-2xl shadow-xl shadow-black/15 p-2 min-w-[210px]">
+                {links.map((link, i) => (
+                  <a
+                    key={link}
+                    href={hrefs[i]}
+                    onClick={() => setOpen(false)}
+                    className="nav-link self-start px-4 py-2.5 text-sm font-medium text-[#1a4a47] transition-colors duration-200"
+                  >
+                    {link}
+                  </a>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Donate CTA — white bg + green text over the hero */}
+          <a
+            href={DONATE_HREF}
+            className={`inline-flex items-center rounded-full px-5 sm:px-6 py-3 text-xs font-semibold uppercase tracking-[0.15em] shadow-lg shadow-black/15 transition-colors duration-300 ${donateClass}`}
           >
-            <div className="flex flex-col items-start bg-white rounded-2xl shadow-xl shadow-black/15 p-2 min-w-[210px]">
-              {links.map((link, i) => (
-                <a
-                  key={link}
-                  href={hrefs[i]}
-                  onClick={() => setOpen(false)}
-                  className="nav-link self-start px-4 py-2.5 text-sm font-medium text-[#1a4a47] transition-colors duration-200"
-                >
-                  {link}
-                </a>
-              ))}
-            </div>
-          </motion.div>
+            Donate
+          </a>
         </div>
-
-        {/* Donate */}
-        <a
-          href={DONATE_HREF}
-          className="inline-flex items-center rounded-full bg-[#0e3431] px-5 sm:px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.15em] text-white shadow-lg shadow-black/15 transition-colors duration-300 hover:bg-[#15403b]"
-        >
-          Donate
-        </a>
       </div>
-    </>
+    </header>
   );
 }
