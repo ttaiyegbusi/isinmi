@@ -180,11 +180,9 @@ export default function Hero() {
             className="font-display font-black text-white text-center uppercase leading-[0.95] text-[clamp(2.5rem,8vw,6rem)]"
             style={{ letterSpacing: "-0.01em", opacity: 0 }}
           >
-            We are
+            Protecting Children
             <br />
-            providing
-            <br />
-            survivors rest
+            Empowering Survivors
           </h1>
         </div>
 
