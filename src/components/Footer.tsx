@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Mail, Phone, MapPin } from "lucide-react";
 
 const navLinks = [
   { label: "Home", href: "#home" },
@@ -116,6 +117,28 @@ export default function Footer() {
             <p className="mt-4 text-white/50 text-sm leading-relaxed max-w-[220px]">
               Providing rest for survivors of sexual abuse in Nigeria.
             </p>
+
+            {/* Contact */}
+            <div className="mt-7 space-y-3 text-sm">
+              <a
+                href="mailto:isinmifoundation@gmail.com"
+                className="flex items-center gap-3 text-white/70 hover:text-[#2ee8d5] transition-colors"
+              >
+                <Mail size={16} strokeWidth={1.75} className="flex-shrink-0" />
+                isinmifoundation@gmail.com
+              </a>
+              <a
+                href="tel:+250792525820"
+                className="flex items-center gap-3 text-white/70 hover:text-[#2ee8d5] transition-colors"
+              >
+                <Phone size={16} strokeWidth={1.75} className="flex-shrink-0" />
+                +250 792 525 820
+              </a>
+              <div className="flex items-center gap-3 text-white/70">
+                <MapPin size={16} strokeWidth={1.75} className="flex-shrink-0" />
+                Lagos, Nigeria
+              </div>
+            </div>
           </div>
 
           {/* Link columns */}
