@@ -1,5 +1,10 @@
 import { useRef, useEffect } from "react";
 
+const SDG_GOALS = ["03", "04", "05", "10", "16", "17"];
+const sdgUrl = (n: string) =>
+  `https://sdgs.un.org/sites/default/files/goals/E_SDG_Icons-${n}.jpg`;
+const sdgLoop = [...SDG_GOALS, ...SDG_GOALS];
+
 const programs = [
   {
     name: "School Outreaches",
@@ -100,6 +105,28 @@ export default function OurPrograms() {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* SDG marquee — the goals these programs advance */}
+        <div className="program-item mt-20 lg:mt-28" data-delay={`${programs.length * 90}`}>
+          <span className="text-sm font-semibold tracking-[0.2em] uppercase">
+            <span className="text-[#2ee8d5]">/</span>{" "}
+            <span className="text-[#2ee8d5]">The Goals We Advance</span>
+          </span>
+          <div className="sdg-marquee overflow-hidden mt-10">
+            <div className="sdg-track">
+              {sdgLoop.map((n, i) => (
+                <div key={i} className="flex-shrink-0 px-4 sm:px-6">
+                  <img
+                    src={sdgUrl(n)}
+                    alt={`Sustainable Development Goal ${parseInt(n, 10)}`}
+                    loading="eager"
+                    className="w-28 h-28 sm:w-36 sm:h-36 rounded-xl object-cover select-none pointer-events-none"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>
