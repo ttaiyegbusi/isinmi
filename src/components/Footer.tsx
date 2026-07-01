@@ -37,7 +37,7 @@ export default function Footer() {
 
   return (
     <footer id="join" className="footer-waves text-white overflow-hidden relative">
-      <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-20 pt-20 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-20 pt-[100px] relative z-10">
         {/* CTA + email */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
           <div>

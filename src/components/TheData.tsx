@@ -136,7 +136,7 @@ export default function TheData() {
     >
       <div
         ref={sectionRef}
-        className="relative max-w-7xl mx-auto min-h-[inherit] px-6 sm:px-12 lg:px-20 py-20"
+        className="relative max-w-7xl mx-auto min-h-[inherit] px-6 sm:px-12 lg:px-20 py-[100px]"
       >
         {/* Label + copy, top-left */}
         <div className="relative z-10 max-w-xl">

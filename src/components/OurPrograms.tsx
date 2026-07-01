@@ -61,7 +61,7 @@ export default function OurPrograms() {
   return (
     <section
       id="programs"
-      className="bg-[#0e3431] py-20 px-6 sm:px-12 lg:px-20"
+      className="bg-[#0e3431] py-[100px] px-6 sm:px-12 lg:px-20"
     >
       <div className="max-w-7xl mx-auto" ref={containerRef}>
         {/* Header */}
