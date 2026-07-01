@@ -134,6 +134,30 @@ export default function Footer() {
             </ul>
           </div>
 
+          {/* Contact Us */}
+          <div>
+            <div className="text-white/45 text-sm mb-5">Contact Us</div>
+            <ul className="space-y-3.5 text-base">
+              <li>
+                <a
+                  href="mailto:isinmifoundation@gmail.com"
+                  className="text-white hover:text-[#2ee8d5] transition-colors whitespace-nowrap"
+                >
+                  isinmifoundation@gmail.com
+                </a>
+              </li>
+              <li>
+                <a
+                  href="tel:+250792525820"
+                  className="text-white hover:text-[#2ee8d5] transition-colors whitespace-nowrap"
+                >
+                  +250 792 525 820
+                </a>
+              </li>
+              <li className="text-white">Lagos, Nigeria</li>
+            </ul>
+          </div>
+
           {/* Legal */}
           <div>
             <div className="text-white/45 text-sm mb-5">Legal</div>
@@ -166,30 +190,6 @@ export default function Footer() {
                 </a>
               ))}
             </div>
-          </div>
-
-          {/* Contact Us */}
-          <div>
-            <div className="text-white/45 text-sm mb-5">Contact Us</div>
-            <ul className="space-y-3.5 text-base">
-              <li>
-                <a
-                  href="mailto:isinmifoundation@gmail.com"
-                  className="text-white hover:text-[#2ee8d5] transition-colors whitespace-nowrap"
-                >
-                  isinmifoundation@gmail.com
-                </a>
-              </li>
-              <li>
-                <a
-                  href="tel:+250792525820"
-                  className="text-white hover:text-[#2ee8d5] transition-colors whitespace-nowrap"
-                >
-                  +250 792 525 820
-                </a>
-              </li>
-              <li className="text-white">Lagos, Nigeria</li>
-            </ul>
           </div>
           </div>
         </div>
