@@ -141,7 +141,7 @@ export default function Footer() {
               <li>
                 <a
                   href="mailto:isinmifoundation@gmail.com"
-                  className="text-white hover:text-[#2ee8d5] transition-colors whitespace-nowrap"
+                  className="footer-link text-white hover:text-[#2ee8d5] transition-colors whitespace-nowrap"
                 >
                   isinmifoundation@gmail.com
                 </a>
@@ -149,7 +149,7 @@ export default function Footer() {
               <li>
                 <a
                   href="tel:+250792525820"
-                  className="text-white hover:text-[#2ee8d5] transition-colors whitespace-nowrap"
+                  className="footer-link text-white hover:text-[#2ee8d5] transition-colors whitespace-nowrap"
                 >
                   +250 792 525 820
                 </a>
