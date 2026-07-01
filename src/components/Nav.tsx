@@ -85,7 +85,7 @@ export default function Nav() {
             <a
               key={link}
               href={hrefs[i]}
-              className={`nav-link text-sm font-medium transition-colors duration-200 ${linkColor}`}
+              className={`wave-underline text-sm font-medium transition-colors duration-200 ${linkColor}`}
             >
               {link}
             </a>

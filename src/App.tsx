@@ -46,8 +46,8 @@ function App() {
       <AboutUs />
       <TheData />
       <MissionStatement />
-      <SdgMarquee />
       <OurPrograms />
+      <SdgMarquee />
       <OurReach />
       <OurValues />
       <Testimonials />
