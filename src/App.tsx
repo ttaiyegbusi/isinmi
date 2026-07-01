@@ -9,6 +9,7 @@ import OurPrograms from "./components/OurPrograms";
 import OurReach from "./components/OurReach";
 import OurValues from "./components/OurValues";
 import Testimonials from "./components/Testimonials";
+import Gallery from "./components/Gallery";
 import Faq from "./components/Faq";
 import Footer from "./components/Footer";
 
@@ -49,6 +50,7 @@ function App() {
       <OurReach />
       <OurValues />
       <Testimonials />
+      <Gallery />
       <Faq />
       <Footer />
     </main>
