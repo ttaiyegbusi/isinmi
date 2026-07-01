@@ -21,11 +21,7 @@ function Word({
   range: [number, number];
 }) {
   const color = useTransform(progress, range, ["#9ca3af", "#111827"]);
-  return (
-    <motion.span style={{ color }} className="inline-block">
-      {children}&nbsp;
-    </motion.span>
-  );
+  return <motion.span style={{ color }}>{children} </motion.span>;
 }
 
 function Paragraph({

@@ -1,15 +1,15 @@
-import { Image as ImageIcon } from "lucide-react";
 import { useReveal } from "../hooks/useReveal";
 
-// Placeholder tiles until real photos are supplied. `span` lets a few tiles
-// occupy a larger cell for a gallery/mosaic feel.
-const tiles = [
-  { span: "md:row-span-2" },
-  {},
-  {},
-  {},
-  { span: "md:col-span-2" },
-  {},
+const photos = [
+  { src: "/gallery/g-2.jpg", alt: "A student holding an Ìsinmi affirmation card during an outreach" },
+  { src: "/gallery/g-5.jpg", alt: "Ìsinmi team speaking with students in a school courtyard" },
+  { src: "/gallery/g-3.jpg", alt: "Students smiling with their affirmation cards" },
+  { src: "/gallery/g-1.jpg", alt: "Students speaking during a school outreach session" },
+  { src: "/gallery/g-7.jpg", alt: "An Ìsinmi facilitator addressing a school assembly" },
+  { src: "/gallery/g-4.jpg", alt: "Students holding 'You Got This' and 'My body, My rules' cards" },
+  { src: "/gallery/g-heic-0045.jpg", alt: "Ìsinmi at the Isange One Stop Centre" },
+  { src: "/gallery/g-6.jpg", alt: "Group photo after a school outreach" },
+  { src: "/gallery/g-heic-0035.jpg", alt: "Partnership visit to the Isange One Stop Centre" },
 ];
 
 export default function Gallery() {
@@ -28,18 +28,19 @@ export default function Gallery() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 auto-rows-[180px] sm:auto-rows-[220px] gap-3 sm:gap-4">
-          {tiles.map((t, i) => (
+        {/* Masonry via CSS columns — handles the mixed portrait/landscape shots */}
+        <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 sm:gap-5">
+          {photos.map((p) => (
             <div
-              key={i}
-              className={`relative rounded-2xl overflow-hidden bg-gray-100 border border-gray-200/60 flex flex-col items-center justify-center gap-2 ${
-                t.span || ""
-              }`}
+              key={p.src}
+              className="mb-4 sm:mb-5 break-inside-avoid overflow-hidden rounded-2xl bg-gray-100"
             >
-              <ImageIcon className="text-gray-300" size={38} strokeWidth={1.25} />
-              <span className="text-gray-400 text-xs tracking-[0.15em] uppercase">
-                Photo coming soon
-              </span>
+              <img
+                src={p.src}
+                alt={p.alt}
+                loading="lazy"
+                className="w-full h-auto object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-[1.04]"
+              />
             </div>
           ))}
         </div>
