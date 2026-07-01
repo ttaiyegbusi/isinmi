@@ -67,13 +67,13 @@ export default function AboutUs() {
             words={words1}
             startIndex={0}
             progress={scrollYProgress}
-            className="max-w-4xl text-[1.6rem] sm:text-3xl lg:text-[2.9rem] leading-snug font-light mb-6 sm:mb-8"
+            className="text-[1.5rem] sm:text-[1.75rem] lg:text-[2.4rem] leading-[1.5] font-light mb-6 sm:mb-8"
           />
           <Paragraph
             words={words2}
             startIndex={words1.length}
             progress={scrollYProgress}
-            className="max-w-4xl text-[1.6rem] sm:text-3xl lg:text-[2.9rem] leading-snug font-light"
+            className="text-[1.5rem] sm:text-[1.75rem] lg:text-[2.4rem] leading-[1.5] font-light"
           />
         </div>
       </div>
