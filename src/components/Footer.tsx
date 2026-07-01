@@ -119,7 +119,7 @@ export default function Footer() {
           </div>
 
           {/* Link columns */}
-          <div className="grid grid-cols-2 gap-y-10 gap-x-8 lg:flex lg:justify-between lg:gap-x-10">
+          <div className="grid grid-cols-1 gap-y-10 lg:flex lg:justify-between lg:gap-x-10">
           {/* Navigation */}
           <div>
             <div className="text-white/45 text-sm mb-5">Navigation</div>

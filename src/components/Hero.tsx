@@ -163,7 +163,7 @@ export default function Hero() {
           transition={{ duration: 0.6, ease: EASE }}
         >
           <div
-            className="flex items-center font-display font-black text-white leading-none select-none"
+            className="flex items-baseline font-display font-black text-white leading-none select-none"
             style={{ fontSize: "clamp(3rem, 13vw, 9rem)", letterSpacing: "-0.01em" }}
           >
             {LETTERS.slice(0, SLOT_AT).map((ch, i) => (
@@ -173,8 +173,8 @@ export default function Hero() {
             ))}
             <motion.div
               ref={slotRef}
-              className="self-center flex-shrink-0 mx-[0.08em]"
-              style={{ height: "0.74em" }}
+              className="flex-shrink-0 mx-[0.08em]"
+              style={{ height: "0.72em" }}
               initial={{ width: 0 }}
               animate={{ width: phase === "letters" ? 0 : slotTarget }}
               transition={{ duration: 0.6, ease: EASE }}
