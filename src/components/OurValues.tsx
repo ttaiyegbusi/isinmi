@@ -55,7 +55,7 @@ export default function OurValues() {
   }, []);
 
   return (
-    <section id="values" className="bg-[#0e3431] py-28 sm:py-36 lg:py-44 px-6 sm:px-12 lg:px-20">
+    <section id="values" className="bg-[#0e3431] py-[30px] lg:py-12 px-6 sm:px-12 lg:px-20">
       <div className="max-w-7xl mx-auto" ref={containerRef}>
         {/* Header */}
         <div className="value-item" data-delay="0">
@@ -70,7 +70,7 @@ export default function OurValues() {
         </div>
 
         {/* Values list (offset to the right on desktop) */}
-        <div className="mt-20 lg:mt-28 lg:pl-[33%]">
+        <div className="mt-12 lg:mt-16 lg:pl-[33%]">
           {values.map((val, i) => (
             <div
               key={val.name}

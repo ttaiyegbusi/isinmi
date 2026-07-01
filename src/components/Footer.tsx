@@ -37,7 +37,7 @@ export default function Footer() {
 
   return (
     <footer id="join" className="footer-waves text-white overflow-hidden relative">
-      <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-20 pt-24 sm:pt-28 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-20 pt-[30px] lg:pt-12 relative z-10">
         {/* CTA + email */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
           <div>
@@ -105,7 +105,7 @@ export default function Footer() {
         </div>
 
         {/* Brand + link columns */}
-        <div className="mt-24 sm:mt-28 grid grid-cols-1 lg:grid-cols-[240px_1fr] gap-12 lg:gap-16">
+        <div className="mt-14 lg:mt-16 grid grid-cols-1 lg:grid-cols-[240px_1fr] gap-12 lg:gap-16">
           {/* Brand */}
           <div>
             <img

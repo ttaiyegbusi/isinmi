@@ -5,7 +5,7 @@ export default function MissionStatement() {
   const headRef = useReveal<HTMLHeadingElement>(150);
 
   return (
-    <section className="bg-white py-28 sm:py-36 lg:py-44">
+    <section className="bg-white py-[30px] lg:py-12">
       <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-20">
         <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-10 lg:gap-16">
           {/* Label */}
@@ -31,7 +31,7 @@ export default function MissionStatement() {
 
             <h2
               ref={headRef}
-              className="mt-20 lg:mt-28 font-display font-black leading-[0.95] text-[clamp(3rem,9vw,7.5rem)]"
+              className="mt-12 lg:mt-20 font-display font-black leading-[0.95] text-[clamp(3rem,9vw,7.5rem)]"
               style={{ letterSpacing: "-0.02em" }}
             >
               <span className="text-gray-900">At </span>

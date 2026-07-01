@@ -61,7 +61,7 @@ export default function OurPrograms() {
   return (
     <section
       id="programs"
-      className="bg-[#0e3431] py-28 sm:py-36 lg:py-44 px-6 sm:px-12 lg:px-20"
+      className="bg-[#0e3431] py-[30px] lg:py-12 px-6 sm:px-12 lg:px-20"
     >
       <div className="max-w-7xl mx-auto" ref={containerRef}>
         {/* Header */}
@@ -77,7 +77,7 @@ export default function OurPrograms() {
         </div>
 
         {/* Programs grid */}
-        <div className="mt-20 lg:mt-28 grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6">
+        <div className="mt-12 lg:mt-16 grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6">
           {programs.map((p, i) => (
             <div
               key={p.name}
@@ -108,7 +108,7 @@ export default function OurPrograms() {
         </div>
 
         {/* SDG marquee — the goals these programs advance */}
-        <div className="program-item mt-20 lg:mt-28" data-delay={`${programs.length * 90}`}>
+        <div className="program-item mt-12 lg:mt-16" data-delay={`${programs.length * 90}`}>
           <span className="text-sm font-semibold tracking-[0.2em] uppercase">
             <span className="text-[#2ee8d5]">/</span>{" "}
             <span className="text-[#2ee8d5]">The Goals We Advance</span>

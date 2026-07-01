@@ -134,7 +134,7 @@ export default function Testimonials() {
   };
 
   return (
-    <section id="testimonials" className="bg-white py-28 sm:py-36 lg:py-44 overflow-hidden">
+    <section id="testimonials" className="bg-white py-[30px] lg:py-12 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-20 mb-16">
         <div ref={headerRef} className="flex items-start justify-between gap-6">
           <div>

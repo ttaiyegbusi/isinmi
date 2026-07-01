@@ -46,8 +46,36 @@ export default function Hero() {
       return;
     }
     setSlotTarget(Math.min(300, window.innerWidth * 0.42));
-    const t1 = setTimeout(() => setPhase("slot"), 1100);
-    const t2 = setTimeout(() => setPhase("expand"), 1950);
+
+    let t1 = 0;
+    let t2 = 0;
+    let started = false;
+    const startTimeline = () => {
+      if (started) return;
+      started = true;
+      t1 = window.setTimeout(() => setPhase("slot"), 1100);
+      t2 = window.setTimeout(() => setPhase("expand"), 1950);
+    };
+
+    // Wait for the display font before starting the intro so the typed letters
+    // are measured/rendered with the correct metrics. Without this the image
+    // slot misaligns whenever the font loads late (e.g. in production on Vercel,
+    // where the font isn't cached like it is on localhost). Falls back at 1.5s.
+    const fonts = document.fonts;
+    if (fonts && fonts.load) {
+      const fallback = window.setTimeout(startTimeline, 1500);
+      fonts
+        .load('400 40px "Radio Grotesk"')
+        .then(() => fonts.ready)
+        .then(() => {
+          clearTimeout(fallback);
+          startTimeline();
+        })
+        .catch(() => startTimeline());
+    } else {
+      startTimeline();
+    }
+
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
@@ -177,7 +205,7 @@ export default function Hero() {
         <div className="absolute inset-0 flex items-center justify-center px-6">
           <h1
             ref={headlineRef}
-            className="font-display font-black text-white text-center uppercase leading-[1.04] text-[clamp(2.5rem,8vw,6rem)]"
+            className="font-display font-black text-white text-center uppercase leading-[1.04] text-[clamp(1.5rem,7vw,6rem)]"
             style={{ letterSpacing: "0.03em", opacity: 0 }}
           >
             Protecting Children

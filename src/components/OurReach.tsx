@@ -99,12 +99,12 @@ export default function OurReach() {
   }, []);
 
   return (
-    <section id="reach" className="bg-[#f7f9f8] py-28 sm:py-36 lg:py-44">
+    <section id="reach" className="bg-[#f7f9f8] py-[30px] lg:py-12">
       {/* Header */}
       <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-20">
         <div
           ref={headerRef}
-          className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-10 lg:gap-16 mb-20 lg:mb-28"
+          className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-10 lg:gap-16 mb-12 lg:mb-16"
         >
           <div>
             <span className="text-sm font-semibold tracking-[0.2em] uppercase">
