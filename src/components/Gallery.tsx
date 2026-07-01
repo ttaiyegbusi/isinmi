@@ -16,8 +16,8 @@ export default function Gallery() {
   const headerRef = useReveal<HTMLDivElement>();
 
   return (
-    <section id="gallery" className="bg-white py-[100px] px-6 sm:px-12 lg:px-20">
-      <div className="max-w-7xl mx-auto">
+    <section id="gallery" className="bg-white py-[100px]">
+      <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-20">
         <div ref={headerRef} className="mb-12 lg:mb-16">
           <span className="text-sm font-semibold tracking-[0.2em] uppercase">
             <span className="text-[#1a4a47]">/</span>{" "}

@@ -61,9 +61,9 @@ export default function OurPrograms() {
   return (
     <section
       id="programs"
-      className="bg-[#0e3431] py-[100px] px-6 sm:px-12 lg:px-20"
+      className="bg-[#0e3431] py-[100px]"
     >
-      <div className="max-w-7xl mx-auto" ref={containerRef}>
+      <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-20" ref={containerRef}>
         {/* Header */}
         <div className="program-item" data-delay="0">
           <span className="text-sm font-semibold tracking-[0.2em] uppercase">

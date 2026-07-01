@@ -25,8 +25,8 @@ export default function Faq() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="bg-[#eef2f1] py-[100px] px-6 sm:px-12 lg:px-20">
-      <div className="max-w-7xl mx-auto">
+    <section id="faq" className="bg-[#eef2f1] py-[100px]">
+      <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-20">
         <div
           ref={headerRef}
           className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-10 lg:gap-16"

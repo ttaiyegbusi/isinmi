@@ -58,8 +58,8 @@ export default function AboutUs() {
 
   return (
     <section id="about" ref={wrapperRef} className="relative bg-white" style={{ height: "140vh" }}>
-      <div className="sticky top-0 h-screen flex flex-col justify-center px-6 sm:px-12 lg:px-20">
-        <div className="max-w-5xl mx-auto w-full">
+      <div className="sticky top-0 h-screen flex flex-col justify-center">
+        <div className="max-w-7xl mx-auto w-full px-6 sm:px-12 lg:px-20">
           <span className="block mb-6 sm:mb-8 text-xs tracking-[0.3em] text-[#1a4a47] font-semibold uppercase">
             / About Us
           </span>
@@ -67,13 +67,13 @@ export default function AboutUs() {
             words={words1}
             startIndex={0}
             progress={scrollYProgress}
-            className="text-[1.6rem] sm:text-3xl lg:text-[2.9rem] leading-snug font-light mb-6 sm:mb-8"
+            className="max-w-4xl text-[1.6rem] sm:text-3xl lg:text-[2.9rem] leading-snug font-light mb-6 sm:mb-8"
           />
           <Paragraph
             words={words2}
             startIndex={words1.length}
             progress={scrollYProgress}
-            className="text-[1.6rem] sm:text-3xl lg:text-[2.9rem] leading-snug font-light"
+            className="max-w-4xl text-[1.6rem] sm:text-3xl lg:text-[2.9rem] leading-snug font-light"
           />
         </div>
       </div>

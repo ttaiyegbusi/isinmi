@@ -55,8 +55,8 @@ export default function OurValues() {
   }, []);
 
   return (
-    <section id="values" className="bg-[#0e3431] py-[100px] px-6 sm:px-12 lg:px-20">
-      <div className="max-w-7xl mx-auto" ref={containerRef}>
+    <section id="values" className="bg-[#0e3431] py-[100px]">
+      <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-20" ref={containerRef}>
         {/* Header */}
         <div className="value-item" data-delay="0">
           <span className="text-sm font-semibold tracking-[0.2em] uppercase">
