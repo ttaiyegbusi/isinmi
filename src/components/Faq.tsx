@@ -25,7 +25,7 @@ export default function Faq() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="bg-[#eef2f1] py-[50px] px-6 sm:px-12 lg:px-20">
+    <section id="faq" className="bg-[#eef2f1] py-20 px-6 sm:px-12 lg:px-20">
       <div className="max-w-7xl mx-auto">
         <div
           ref={headerRef}

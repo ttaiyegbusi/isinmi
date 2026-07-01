@@ -55,7 +55,7 @@ export default function OurValues() {
   }, []);
 
   return (
-    <section id="values" className="bg-[#0e3431] py-[30px] lg:py-12 px-6 sm:px-12 lg:px-20">
+    <section id="values" className="bg-[#0e3431] py-20 px-6 sm:px-12 lg:px-20">
       <div className="max-w-7xl mx-auto" ref={containerRef}>
         {/* Header */}
         <div className="value-item" data-delay="0">

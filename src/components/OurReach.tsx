@@ -99,7 +99,7 @@ export default function OurReach() {
   }, []);
 
   return (
-    <section id="reach" className="bg-[#f7f9f8] py-[30px] lg:py-12">
+    <section id="reach" className="bg-[#f7f9f8] py-20">
       {/* Header */}
       <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-20">
         <div

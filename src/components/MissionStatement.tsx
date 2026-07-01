@@ -5,7 +5,7 @@ export default function MissionStatement() {
   const headRef = useReveal<HTMLHeadingElement>(150);
 
   return (
-    <section className="bg-white py-[30px] lg:py-12">
+    <section className="bg-white py-20">
       <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-20">
         <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-10 lg:gap-16">
           {/* Label */}
